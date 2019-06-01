@@ -30,4 +30,4 @@
 mysql-data/
 
 # dotenv-rails
-.env
+.env*
