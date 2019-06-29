@@ -21,6 +21,11 @@ class User < ApplicationRecord
     user
   end
 
+  # ログイン保持チェックボックスを非表示にしたので記憶
+  def remember_me
+    true
+  end
+
   private
   
   # ダミーのアドレスを用意
