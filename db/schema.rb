@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 2019_06_30_062245) do
     t.string "uid"
     t.string "username"
     t.string "nickname"
-    t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
   end
 
 end
