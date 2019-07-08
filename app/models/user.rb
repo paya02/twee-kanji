@@ -6,7 +6,7 @@ class User < ApplicationRecord
   
   def self.find_for_oauth(auth)
     user = User.where(uid: auth.uid, provider: auth.provider).first
-
+    
     unless user
       user = User.create(
         uid:      auth.uid,
@@ -24,6 +24,11 @@ class User < ApplicationRecord
   # ログイン保持チェックボックスを非表示にしたので記憶
   def remember_me
     true
+  end
+
+  # パスワード入力は不要なので、ソーシャルログイン以外(未実装)の場合だけチェック
+  def password_required?
+    super && provider.blank?
   end
 
   private
