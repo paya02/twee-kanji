@@ -3,6 +3,7 @@ class EventsController < ApplicationController
   end
 
   def add
+    @event = Event.new
   end
 
   def edit

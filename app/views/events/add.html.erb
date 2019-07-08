@@ -1,2 +1,37 @@
 <h1>Events#add</h1>
 <p>Find me in app/views/events/add.html.erb</p>
+<% if @event.errors.any? %>
+<ul>
+  <% @event.errors.full_messages.each do |err| %>
+    <li><%= err %></li>
+  <% end %>
+</ul>
+<% end %> 
+<table>
+  <%= form_for(@event, url:{controller:'events', action:'create'}) do |form| %>
+    <tr>
+      <th>イベント名</th>
+      <td><%= form.text_field :title %></td>
+    </tr>
+    <tr>
+      <th>開催日候補</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>URL(お店、イベントページなど)</th>
+      <td><%= form.text_field :url %></td>
+    </tr>
+    <tr>
+      <th>会費</th>
+      <td><%= form.number_field :fee, min:0, max:99999999, step:1 %></td>
+    </tr>
+    <tr>
+      <th>イベント詳細</th>
+      <td><%= form.text_area :detail, {cols:30, rows:3} %></td>
+    </tr>
+    <tr>
+      <th></th>
+      <td><%= form.submit "送信" %></td>
+    </tr>
+  <% end %>
+</table>
