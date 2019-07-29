@@ -1,3 +1,28 @@
+<script type="text/javascript">
+$(function () {
+  let dateCnt = <%= @date_cnt %>;
+  let inpDateIdx;
+
+  $("#datepicker").datepicker({
+    // 日付が選択された時、日付をテキストフィールドへセット
+    onSelect: function (dateText, inst) {
+      for (inpDateIdx = 1; inpDateIdx <= dateCnt; inpDateIdx++) {
+        // 上から検索して空白のところにセット
+        if ($("#date_val" + inpDateIdx.toString()).val() == '') {
+          $("#date_val" + inpDateIdx.toString()).val(dateText);
+          break;
+        }
+      }
+    }
+  });
+
+  $(document).on('click', '.rowdel', function () {
+    // 同じ行で隣列したinputをクリア
+    $(this).parent().prev().children('input').val('');
+  });
+});
+</script>
+
 <h1>Events#add</h1>
 <p>Find me in app/views/events/add.html.erb</p>
 <% if @event.errors.any? %>
@@ -15,7 +40,21 @@
     </tr>
     <tr>
       <th>開催日候補</th>
-      <td></td>
+      <td>
+        <table><tr>
+        <td><div id="datepicker"></div></td>
+        <td>
+          <table id ="date_list">
+            <% @date_cnt.times do |count| %>
+              <tr>
+                <td><input type="text" id="date_val<%= count + 1 %>" name="date_val[]"></td>
+                <td><button type="button" class="rowdel">クリア</button></td>
+              </tr>
+            <% end %>
+          </table>
+        </td>
+        </tr></table>
+      </td>
     </tr>
     <tr>
       <th>URL(お店、イベントページなど)</th>

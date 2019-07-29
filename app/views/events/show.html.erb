@@ -1,2 +1,24 @@
 <h1>Events#show</h1>
 <p>Find me in app/views/events/show.html.erb</p>
+<table>
+  <tr>
+    <th>イベント名</th>
+    <td><%= @event.title %></td>
+  </tr>
+  <tr>
+    <th>開催日候補</th>
+    <td><%= @event.date_list %></td>
+  </tr>
+  <tr>
+    <th>URL(お店、イベントページなど)</th>
+    <td><%= @event.url %></td>
+  </tr>
+  <tr>
+    <th>会費</th>
+    <td><%= @event.fee %></td>
+  </tr>
+  <tr>
+    <th>イベント詳細</th>
+    <td><%= @event.detail %></td>
+  </tr>
+</table>
