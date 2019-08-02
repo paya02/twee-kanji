@@ -14,6 +14,9 @@ class EventsController < ApplicationController
     if request.post? then
       @event = Event.new event_params
       
+      # ログインユーザのイベントとして作成
+      @event.user_id = current_user.id
+
       # 候補日付をカンマ区切りで保存
       csv_date = ""
       params[:date_val].each do |date|
@@ -22,7 +25,7 @@ class EventsController < ApplicationController
       @event.date_list = csv_date
 
       if @event.save then
-        render action: 'show', id: @event.id
+        redirect_to action: 'show', id: @event.id
       else
         render 'add'
       end
