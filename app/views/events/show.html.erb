@@ -7,7 +7,25 @@
   </tr>
   <tr>
     <th>開催日候補</th>
-    <td><%= @event.date_list %></td>
+    <td>
+      <table id ="date_list">
+        <tr>
+          <th>日付</th>
+          <th>(集計)</th>
+          <% @member.each do |obj| %>
+            <th><%= obj.user.nickname %></th>
+          <% end %>
+        </tr>
+
+        <% @date_ary.each do |date| %>
+          <% if date != nil then %>
+            <tr>
+              <td><%= date %></td>
+            </tr>
+          <% end %>  
+        <% end %>
+      </table>
+    </td>
   </tr>
   <tr>
     <th>URL(お店、イベントページなど)</th>
