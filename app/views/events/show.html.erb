@@ -1,9 +1,63 @@
+<script type="text/javascript">
+$(function(){
+    // 「.modal-open」をクリック
+    $('.modal-open').click(function(){
+        // オーバーレイ用の要素を追加
+        $('body').append('<div class="modal-overlay"></div>');
+        // オーバーレイをフェードイン
+        $('.modal-overlay').fadeIn('fast');
+
+        // モーダルコンテンツのIDを取得
+        var modal = '#' + $(this).attr('data-target');
+        // モーダルコンテンツの表示位置を設定
+        modalResize();
+         // モーダルコンテンツフェードイン
+        $(modal).fadeIn('fast');
+
+        // 「.modal-overlay」あるいは「.modal-close」をクリック
+        $('.modal-overlay, .modal-close').off().click(function(){
+            // モーダルコンテンツとオーバーレイをフェードアウト
+            $(modal).fadeOut('fast');
+            $('.modal-overlay').fadeOut('fast',function(){
+                // オーバーレイを削除
+                $('.modal-overlay').remove();
+            });
+        });
+
+        // リサイズしたら表示位置を再取得
+        $(window).on('resize', function(){
+            modalResize();
+        });
+
+        // モーダルコンテンツの表示位置を設定する関数
+        function modalResize(){
+            // ウィンドウの横幅、高さを取得
+            var w = $(window).width();
+            var h = $(window).height();
+
+            // モーダルコンテンツの表示位置を取得
+            var x = (w - $(modal).outerWidth(true)) / 2;
+            var y = (h - $(modal).outerHeight(true)) / 2;
+
+            // モーダルコンテンツの表示位置を設定
+            $(modal).css({'left': x + 'px','top': y + 'px'});
+        }
+    });
+});
+</script>
+
 <h1>Events#show</h1>
 <p>Find me in app/views/events/show.html.erb</p>
 <table>
   <tr>
     <th>イベント名</th>
     <td><%= @event.title %></td>
+  </tr>
+  <tr>
+    <th></th>
+    <td>
+      <a data-target="member_add" class="uk-button uk-button-danger modal-open">メンバー追加</a>
+    </td>
   </tr>
   <tr>
     <th>開催日候補</th>
@@ -13,10 +67,9 @@
           <th>日付</th>
           <th>(集計)</th>
           <% @member.each do |obj| %>
-            <th><%= obj.user.nickname %></th>
-          <% end %>
+            <th><%= obj.user.username %></th>
+          <% end %> 
         </tr>
-
         <% @date_ary.each do |date| %>
           <% if date != nil then %>
             <tr>
@@ -40,3 +93,17 @@
     <td><%= @event.detail %></td>
   </tr>
 </table>
+
+<div id="member_add" class="modal-content">
+    <p>追加するメンバーを、Twitterリストから選択してください</p>
+    <table>
+      <% @owned_lists.each do |obj| %>
+        <tr>
+          <td><%= link_to(obj.name, :action => 'show', :list => obj.name) %></td>
+          <td><%= obj.member_count %></td>
+          <td><%= obj.description %></td>
+        </tr>
+      <% end %>
+    </table>
+    <p><a class="modal-close uk-button uk-button-primary">閉じる</a></p>
+</div>
