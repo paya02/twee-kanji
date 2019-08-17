@@ -17,4 +17,5 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require jquery-ui/i18n/datepicker-ja
+//= require uikit
 //= require_tree .
