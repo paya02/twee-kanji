@@ -56,13 +56,14 @@ $(function(){
   <tr>
     <th></th>
     <td>
+      <a data-target="decision_set" class="uk-button uk-button-primary modal-open">日程入力</a>
       <a data-target="member_add" class="uk-button uk-button-danger modal-open">メンバー追加</a>
     </td>
   </tr>
   <tr>
     <th>開催日候補</th>
     <td>
-      <table id ="date_list">
+      <table id ="date_list" class="uk-table uk-table-striped">
         <tr>
           <th>日付</th>
           <th>(集計)</th>
@@ -70,12 +71,16 @@ $(function(){
             <th><%= obj.user.username %></th>
           <% end %> 
         </tr>
-        <% @date_ary.each do |date| %>
-          <% if date != nil then %>
-            <tr>
-              <td><%= date %></td>
-            </tr>
-          <% end %>  
+        <% @decisionDate.each do |date| %>
+          <tr>
+            <td><%= date.day.strftime('%Y/%m/%d') %></td>
+            <td></td>
+            <% @decisionUser.each do |user| %>
+              <% if user.day == date.day %>
+                <td><%= user.propriety %></td>
+              <% end %>
+            <% end %>
+          </tr>
         <% end %>
       </table>
     </td>

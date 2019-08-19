@@ -3,7 +3,6 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
-    @date_ary = @event.date_list.split(',')
 
     # TwitterAPI使用準備
     client = twitter_configuration
@@ -21,16 +20,32 @@ class EventsController < ApplicationController
           @member = Member.new
           @member.event_id = @event.id
           @member.user_id = @user.id
-          @member.uid = list.id
           @member.save!
-          # @event.detail += @user.nickname + ','
-          # @event.detail += @user.id.to_s + ','
+
+          # 日程判定モデルの保存
+          @event.date_list.split(',').each do |date|
+            if !date.blank? then
+              @decision = Decision.new
+              @decision.event_id = @event.id
+              @decision.user_id = @user.id
+              @decision.day = Date.parse(date)
+              @decision.save!
+            end
+          end
         end
       end
     end
     
-    # 日程調整メンバー
-    @member = Member.where(event_id: @event.id)
+    # メンバー
+    @member = Member.where(event_id: @event.id).order(:id)
+    # 日程(仮。後で日単位で可否別Countをselectしたい(列可変))
+    @decisionDate = Decision.select('day, count(decisions.event_id) as count').where(event_id: @event.id).group(:day).order(:day)
+    # 日別人別評価
+    @decisionUser = Decision.where(event_id: @event.id).order(:day)
+    
+    # 可否ごとの件数をrelationで取得
+    #@decisionSum = Decision.select('propriety, day, count(decisions.event_id) as proprietys_count').where(event_id: @event.id).group(:day, :propriety).order(:day, :propriety)
+    #@event.detail = decisionSum[0].proprietys_count.to_s + '*' + decisionSum[0].day.strftime('%Y/%m/%d') + '*' + decisionSum[0].propriety.to_s
   end
 
   def add
@@ -40,31 +55,37 @@ class EventsController < ApplicationController
 
   def create
     if request.post? then
-      @event = Event.new event_params
-      @member = Member.new
-
-      # ログインユーザのイベントとして作成
-      @event.user_id = current_user.id
-      # 候補日付をカンマ区切りで保存
-      csv_date = ""
-      params[:date_val].each do |date|
-        csv_date += date + ','
-      end
-      @event.date_list = csv_date
-
       # イベント・メンバーmodelを保存
       begin
         Event.transaction do
+          @event = Event.new event_params
+          # ログインユーザのイベントとして作成
+          @event.user_id = current_user.id
+          # 候補日付をカンマ区切りで保存
+          @event.date_list = params[:date_val].join(',')
           @event.save!
+          
+          # 日程判定モデルの保存
+          params[:date_val].each do |date|
+            if !date.blank? then
+              # ex)2019/08/17
+              @decision = Decision.new
+              @decision.event_id = @event.id
+              @decision.user_id = @event.user_id
+              @decision.day = Date.parse(date)
+              @decision.save!
+            end
+          end
+          
           # 幹事を参加メンバーに追加しておく
+          @member = Member.new
           @member.event_id = @event.id
           @member.user_id = @event.user_id
-          @member.uid = current_user.uid
           @member.save!
         end
         redirect_to action: 'show', id: @event.id
       rescue => exception
-        render 'add'        
+        redirect_to action: 'add'
       end
 
     end
