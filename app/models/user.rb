@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :omniauthable
 
   has_many :member
+  has_many :decision
   scope :uid, ->(uid) { where("uid = ?", uid) }
 
   # ログイン時の存在チェック＆ユーザ追加

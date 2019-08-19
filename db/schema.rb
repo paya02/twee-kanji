@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_13_062643) do
+ActiveRecord::Schema.define(version: 2019_08_17_074348) do
+
+  create_table "decisions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "user_id"
+    t.date "day"
+    t.integer "propriety", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id"
@@ -33,7 +42,6 @@ ActiveRecord::Schema.define(version: 2019_08_13_062643) do
     t.integer "vote"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "uid"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
