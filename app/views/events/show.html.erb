@@ -74,7 +74,11 @@ $(function(){
         <% @decisionDate.each do |date| %>
           <tr>
             <td><%= date.day.strftime('%Y/%m/%d') %></td>
-            <td></td>
+            <% @decisionDateSum.each do |dateSum| %>
+              <% if dateSum.day == date.day %>
+                <td><%= dateSum.proprieties_count %></td>
+              <% end %>
+            <% end %>
             <% @decisionUser.each do |user| %>
               <% if user.day == date.day %>
                 <td><%= user.propriety %></td>
@@ -111,4 +115,8 @@ $(function(){
       <% end %>
     </table>
     <p><a class="modal-close uk-button uk-button-primary">閉じる</a></p>
+</div>
+
+<div id="decision_set" class="modal-content">
+  <p>テスト</p>
 </div>

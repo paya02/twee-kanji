@@ -42,10 +42,8 @@ class EventsController < ApplicationController
     @decisionDate = Decision.select('day, count(decisions.event_id) as count').where(event_id: @event.id).group(:day).order(:day)
     # 日別人別評価
     @decisionUser = Decision.where(event_id: @event.id).order(:day)
-    
     # 可否ごとの件数をrelationで取得
-    #@decisionSum = Decision.select('propriety, day, count(decisions.event_id) as proprietys_count').where(event_id: @event.id).group(:day, :propriety).order(:day, :propriety)
-    #@event.detail = decisionSum[0].proprietys_count.to_s + '*' + decisionSum[0].day.strftime('%Y/%m/%d') + '*' + decisionSum[0].propriety.to_s
+    @decisionDateSum = Decision.decision_date_sum(@event.id)
   end
 
   def add
