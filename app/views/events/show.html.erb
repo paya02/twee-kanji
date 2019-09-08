@@ -101,22 +101,49 @@ $(function(){
     <th>イベント詳細</th>
     <td><%= @event.detail %></td>
   </tr>
+  <% if @event.user_id == @current_user_id %>
+  <tr>
+    <th></th>
+    <td><%= link_to('編集', "/events/edit/#{@event.id}", :action => 'edit', :class => 'uk-button uk-button-default') %></td>
+  </tr>
+  <% end %>
 </table>
 
+<!-- メンバー追加 -->
 <div id="member_add" class="modal-content">
-    <p>追加するメンバーを、Twitterリストから選択してください</p>
-    <table>
-      <% @owned_lists.each do |obj| %>
-        <tr>
-          <td><%= link_to(obj.name, :action => 'show', :list => obj.name) %></td>
-          <td><%= obj.member_count %></td>
-          <td><%= obj.description %></td>
-        </tr>
-      <% end %>
-    </table>
-    <p><a class="modal-close uk-button uk-button-primary">閉じる</a></p>
+  <p>追加するメンバーを、Twitterリストから選択してください</p>
+  <table>
+    <% @owned_lists.each do |obj| %>
+      <tr>
+        <td><%= link_to(obj.name, :action => 'show', :list => obj.name) %></td>
+        <td><%= obj.member_count %></td>
+        <td><%= obj.description %></td>
+      </tr>
+    <% end %>
+  </table>
+  <a class="modal-close uk-button uk-button-primary">閉じる</a>
 </div>
 
+<!-- 日程入力 -->
 <div id="decision_set" class="modal-content">
-  <p>テスト</p>
+  <% @member.each do |obj| %>
+    <% if obj.user_id == @current_user_id %>
+      <p>ユーザ：<%= obj.user.username %></p>
+      <%= form_tag({controller: 'events', action: 'adjustment'}, {method: :post}) do %>
+        <table id ="date_user" class="uk-table uk-table-striped">
+          <% @decisionDate.each do |date| %>
+            <tr>
+              <td><%= date.day.strftime('%Y/%m/%d') %></td>
+              <% @decisionUser.each do |user| %>
+                <% if user.day == date.day && user.user_id == @current_user_id %>
+                  <td><%= select_tag('propriety', options_for_select(@proprieties_for_options, user.propriety_before_type_cast), class:'option', name: 'propriety[]') %></td>
+                <% end %>
+              <% end %>
+            </tr>
+          <% end %>
+        </table>
+        <%= submit_tag "保存", class: "uk-button uk-button-primary" %>
+      <% end %>
+    <% end %>
+  <% end %>
 </div>

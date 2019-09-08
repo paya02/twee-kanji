@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   post 'events/add', to: 'events#create'
 
   get 'events/:id', to: 'events#show'
+  post 'events/:id', to: 'events#adjustment'
 
   get 'events/edit/:id', to: 'events#edit'
   patch 'events/edit/:id', to: 'events#update'

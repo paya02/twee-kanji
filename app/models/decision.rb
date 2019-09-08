@@ -4,24 +4,33 @@ class Decision < ApplicationRecord
 
   enum propriety:{ ー: 0, ×: 1, △: 2, ○: 3}
 
-  scope :decision_date_sum, ->(event_id) {
-    sql = ""
-    from = ""
-    # 未入力のハイフンは除くので1から
-    for i in 1..Decision.proprieties.length - 1
-      # 最初のカンマは結合時に削除
-      sql += ",'#{Decision.proprieties.keys[i]}', CASE d.propriety WHEN #{i} THEN d.data_cnt ELSE 0 END, ' '"
+  scope :date, ->(event_id) {
+    Decision.select(:day).where(event_id: event_id).group(:day).order(:day)
+  }
 
-      # UNION->FROM部
-      if from.empty? then
-        from = "SELECT "
-      else
-        from += "UNION ALL SELECT "
-      end
-      from += "decisions.day AS day, COUNT(decisions.event_id) AS data_cnt, propriety AS propriety FROM decisions WHERE decisions.propriety = #{i} AND decisions.event_id = #{event_id} GROUP BY decisions.day "
+  scope :decision_date_sum, ->(event_id) {
+    # 件数取得部
+    cnt = ""
+    for i in 1..Decision.proprieties.length - 1
+      cnt += ",'#{Decision.proprieties.keys[i]}', (SELECT COUNT(s.event_id) FROM decisions s WHERE s.event_id = d.event_id AND s.day = d.day AND s.propriety = #{i}), ' '"
     end
-    sql = "SELECT d.day AS day, CONCAT(" + sql[1, sql.length] + ") AS proprieties_count "
-    from = "FROM (" + from + ") AS d "
-    find_by_sql(sql + from + "ORDER by d.day")
-    }
+    cnt = cnt[1, cnt.length]
+
+    sql = <<-EOS
+    SELECT d.day AS day
+    , CONCAT(#{cnt}) AS proprieties_count
+    FROM decisions d
+    WHERE
+      d.event_id = #{event_id}
+    GROUP BY
+      d.day
+    ORDER BY
+      d.day 
+    EOS
+    find_by_sql(sql)
+  }
+
+  # def self.find_for_save(user_id, day, )
+  #   user = User.where(uid: auth.uid, provider: auth.provider).first
+  # end
 end

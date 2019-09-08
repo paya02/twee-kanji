@@ -1,2 +1,58 @@
 <h1>Events#edit</h1>
 <p>Find me in app/views/events/edit.html.erb</p>
+<% if @event.errors.any? %>
+<ul>
+  <% @event.errors.full_messages.each do |err| %>
+    <li><%= err %></li>
+  <% end %>
+</ul>
+<% end %>
+<%= form_for(@event, url:{controller:'events', action:'update', id: @event.id}) do |form| %>
+  <table>
+    <tr>
+      <th>イベント名</th>
+      <td><%= form.text_field :title %></td>
+    </tr>
+    <tr>
+    <tr><td></td><td><p style="color:red;">※メンバーが日程を入力した日付を削除すると、日程情報も削除されます</p></td></tr>
+    </tr>
+    <tr>
+      <th>開催日候補</th>
+      <td>
+        <table><tr>
+        <td><div id="datepicker"></div></td>
+        <td>
+          <table id ="date_list">
+            <% @date_cnt.times do |count| %>
+              <tr>
+                <td><input type="text" id="date_val<%= count + 1 %>" name="date_val[]" value="<%= @decisionDate[count].blank? ? '' : @decisionDate[count].day.strftime('%Y/%m/%d') %>"></td>
+                <td><button type="button" class="rowdel">クリア</button></td>
+              </tr>
+            <% end %>
+          </table>
+        </td>
+        </tr></table>
+      </td>
+    </tr>
+    <tr>
+      <th>URL(お店、イベントページなど)</th>
+      <td><%= form.text_field :url %></td>
+    </tr>
+    <tr>
+      <th>会費</th>
+      <td><%= form.number_field :fee, min:0, max:99999999, step:1 %></td>
+    </tr>
+    <tr>
+      <th>イベント詳細</th>
+      <td><%= form.text_area :detail, {cols:30, rows:3} %></td>
+    </tr>
+    <tr>
+      <th></th>
+      <td><%= form.submit "送信", class: "uk-button uk-button-primary", data: { disable_with: "送信中..." } %></td>
+    </tr>
+    <tr>
+      <th></th>
+      <td><a class="modal-close uk-button uk-button-default" style="color:grey;">削除</a></td>
+    </tr>
+  </table>
+<% end %>

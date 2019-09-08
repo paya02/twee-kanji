@@ -38,12 +38,41 @@ class EventsController < ApplicationController
     
     # メンバー
     @member = Member.where(event_id: @event.id).order(:id)
-    # 日程(仮。後で日単位で可否別Countをselectしたい(列可変))
-    @decisionDate = Decision.select('day, count(decisions.event_id) as count').where(event_id: @event.id).group(:day).order(:day)
+    # 日程
+    @decisionDate = Decision.select(:day).where(event_id: @event.id).group(:day).order(:day)
     # 日別人別評価
     @decisionUser = Decision.where(event_id: @event.id).order(:day)
     # 可否ごとの件数をrelationで取得
     @decisionDateSum = Decision.decision_date_sum(@event.id)
+    # ログイン中のユーザID(User)
+    @current_user_id = current_user.id
+    # リストボックスの選択肢
+    @proprieties_for_options = Decision.proprieties
+  end
+
+  def adjustment
+    if request.post? then
+      @event = Event.find(params[:id])
+      @decisionDateUser = Decision.where(event_id: @event.id, user_id: current_user.id).order(:day)
+      # 対象の日付とパラメータの個数が一致することを確認
+      if params[:propriety].length == @decisionDateUser.length then
+        # ログイン中ユーザの評価を更新
+        params[:propriety].zip(@decisionDateUser) do |propriety, decision| 
+          #Decision.find_for_save() 後で消して
+          decision.propriety = propriety.to_i
+          decision.save!
+        end
+        redirect_to action: 'show', id: params[:id]
+      else
+        # 値が不正ですのエラーメッセージ
+      end
+      
+      # 
+      # @decisionDateUser.each do |date|
+      #   if date.day.strftime('%Y/%m/%d') = 
+      # end
+      #render html: params[:propriety].length.to_s + '@' + @decisionDateUser.length.to_s
+    end
   end
 
   def add
@@ -90,6 +119,24 @@ class EventsController < ApplicationController
   end
 
   def edit
+    @date_cnt = APPSETTINGS::MAX_DATE_CNT
+    @event = Event.find(params[:id])
+    # 日程
+    @decisionDate = Decision.date(@event.id)
+  end
+
+  def update
+    if request.patch? then
+      @event = Event.find(params[:id])
+      @event.date_list = params[:date_val].join(',')
+      params = event_params
+      if @event.update_attributes(title: params[:title], url: params[:url], fee: params[:fee], detail: params[:detail], date_list: @event.date_list)
+        redirect_to action: 'show', id: @event.id
+      else
+        # エラー処理
+        redirect_to action: 'edit', id: @event.id
+      end
+    end
   end
 
   private
