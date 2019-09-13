@@ -1,6 +1,50 @@
 class EventsController < ApplicationController
   protect_from_forgery
 
+  def index
+    # ログインユーザのイベント取得
+    @event = Event.event_list(current_user.id)
+  end
+
+  def create
+    if request.post? then
+      # イベント・メンバーmodelを保存
+      begin
+        Event.transaction do
+          @event = Event.new event_params
+          # ログインユーザのイベントとして作成
+          @event.user_id = current_user.id
+          # 候補日付をカンマ区切りで保存
+          @event.date_list = params[:date_val].join(',')
+          @event.save!
+          
+          # 重複削除して日程判定モデルの保存
+          date_list = params[:date_val].uniq
+          date_list.each do |date|
+            if !date.blank? then
+              # ex)2019/08/17
+              @decision = Decision.new
+              @decision.event_id = @event.id
+              @decision.user_id = @event.user_id
+              @decision.day = Date.parse(date)
+              @decision.save!
+            end
+          end
+          
+          # 幹事を参加メンバーに追加しておく
+          @member = Member.new
+          @member.event_id = @event.id
+          @member.user_id = @event.user_id
+          @member.save!
+        end
+        redirect_to action: 'show', id: @event.id
+      rescue => exception
+        redirect_to action: 'add'
+      end
+
+    end
+  end
+
   def show
     @event = Event.find(params[:id])
 
@@ -80,44 +124,6 @@ class EventsController < ApplicationController
     @event = Event.new
   end
 
-  def create
-    if request.post? then
-      # イベント・メンバーmodelを保存
-      begin
-        Event.transaction do
-          @event = Event.new event_params
-          # ログインユーザのイベントとして作成
-          @event.user_id = current_user.id
-          # 候補日付をカンマ区切りで保存
-          @event.date_list = params[:date_val].join(',')
-          @event.save!
-          
-          # 日程判定モデルの保存
-          params[:date_val].each do |date|
-            if !date.blank? then
-              # ex)2019/08/17
-              @decision = Decision.new
-              @decision.event_id = @event.id
-              @decision.user_id = @event.user_id
-              @decision.day = Date.parse(date)
-              @decision.save!
-            end
-          end
-          
-          # 幹事を参加メンバーに追加しておく
-          @member = Member.new
-          @member.event_id = @event.id
-          @member.user_id = @event.user_id
-          @member.save!
-        end
-        redirect_to action: 'show', id: @event.id
-      rescue => exception
-        redirect_to action: 'add'
-      end
-
-    end
-  end
-
   def edit
     @date_cnt = APPSETTINGS::MAX_DATE_CNT
     @event = Event.find(params[:id])
@@ -130,9 +136,15 @@ class EventsController < ApplicationController
       @event = Event.find(params[:id])
       @event.date_list = params[:date_val].join(',')
       params = event_params
-      if @event.update_attributes(title: params[:title], url: params[:url], fee: params[:fee], detail: params[:detail], date_list: @event.date_list)
+      begin
+        Event.transaction do
+          # イベント情報の更新
+          @event.update_attributes!(title: params[:title], url: params[:url], fee: params[:fee], detail: params[:detail], date_list: @event.date_list)
+          # 日程の追加削除判定
+
+        end
         redirect_to action: 'show', id: @event.id
-      else
+      rescue => exception
         # エラー処理
         redirect_to action: 'edit', id: @event.id
       end
