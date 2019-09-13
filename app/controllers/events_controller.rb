@@ -47,6 +47,8 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find(params[:id])
+    # 日程
+    @decisionDate = Decision.select(:day).where(event_id: @event.id).group(:day).order(:day)
 
     # TwitterAPI使用準備
     client = twitter_configuration
@@ -67,14 +69,12 @@ class EventsController < ApplicationController
           @member.save!
 
           # 日程判定モデルの保存
-          @event.date_list.split(',').each do |date|
-            if !date.blank? then
-              @decision = Decision.new
-              @decision.event_id = @event.id
-              @decision.user_id = @user.id
-              @decision.day = Date.parse(date)
-              @decision.save!
-            end
+          @decisionDate.each do |decision|
+            @decision = Decision.new
+            @decision.event_id = @event.id
+            @decision.user_id = @user.id
+            @decision.day = decision.day
+            @decision.save!
           end
         end
       end
@@ -82,8 +82,6 @@ class EventsController < ApplicationController
     
     # メンバー
     @member = Member.where(event_id: @event.id).order(:id)
-    # 日程
-    @decisionDate = Decision.select(:day).where(event_id: @event.id).group(:day).order(:day)
     # 日別人別評価
     @decisionUser = Decision.where(event_id: @event.id).order(:day)
     # 可否ごとの件数をrelationで取得
@@ -111,7 +109,6 @@ class EventsController < ApplicationController
         # 値が不正ですのエラーメッセージ
       end
       
-      # 
       # @decisionDateUser.each do |date|
       #   if date.day.strftime('%Y/%m/%d') = 
       # end
@@ -149,6 +146,12 @@ class EventsController < ApplicationController
         redirect_to action: 'edit', id: @event.id
       end
     end
+  end
+
+  def destroy
+    Event.find(params[:id]).destroy
+    flash[:success] = "イベントを削除しました"
+    redirect_to action: 'index'
   end
 
   private

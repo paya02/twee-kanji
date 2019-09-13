@@ -77,7 +77,7 @@ $(function () {
     </tr>
     <tr>
       <th></th>
-      <td><a class="modal-close uk-button uk-button-default" style="color:grey;">削除</a></td>
+      <td><%= link_to "削除", "/events/#{@event.id}/", method: :delete, data: { confirm: "削除してもよろしいですか?" }, class: "modal-close uk-button uk-button-default" %></td>
     </tr>
   </table>
 <% end %>

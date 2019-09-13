@@ -1,5 +1,6 @@
 class Event < ApplicationRecord
-  has_many :decision
+  has_many :decision, :dependent => :delete_all
+  has_many :member, :dependent => :delete_all
 
   scope :event_list, ->(user_id) {
     sql = <<-EOS

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   get 'events/:id', to: 'events#show'
   post 'events/:id', to: 'events#adjustment'
+  delete 'events/:id', to: 'events#destroy'
 
   get 'events/edit/:id', to: 'events#edit'
   patch 'events/edit/:id', to: 'events#update'
