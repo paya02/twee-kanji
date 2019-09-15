@@ -32,7 +32,6 @@ ActiveRecord::Schema.define(version: 2019_09_15_012036) do
     t.text "detail"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "date_list"
   end
 
   create_table "members", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
