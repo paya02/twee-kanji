@@ -1,0 +1,5 @@
+<div style="border-bottom:solid 0.1px #f0e68c;">
+  <h3><%= link_to(list.title, "/events/#{list.id}", :action => 'show') %></h3>
+  <p><%= '候補日 ' + list.min_day.strftime('%Y/%m/%d') + '〜' + list.max_day.strftime('%Y/%m/%d') %></p>
+  <p><%= list.detail %></p>
+</div>

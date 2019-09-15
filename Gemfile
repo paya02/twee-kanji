@@ -43,6 +43,9 @@ gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'twitter'
+gem 'materialize-sass', '~> 1.0.0'
+gem 'material_icons'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -21,6 +21,12 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def after_sign_in_path_for(resource)
     # sign_in_and_redirectの中でコールされる
-    events_add_url
+    if Member.where(user_id: @user.id).exists?
+      # 参加イベントがある
+      events_url
+    else
+      # 完全新規
+      events_add_url
+    end
   end
 end
