@@ -14,8 +14,6 @@ class EventsController < ApplicationController
           @event = Event.new event_params
           # ログインユーザのイベントとして作成
           @event.user_id = current_user.id
-          # 候補日付をカンマ区切りで保存
-          @event.date_list = params[:date_val].join(',')
           @event.save!
           
           # 重複削除して日程判定モデルの保存
@@ -131,14 +129,14 @@ class EventsController < ApplicationController
   def update
     if request.patch? then
       @event = Event.find(params[:id])
-      @event.date_list = params[:date_val].join(',')
+      # 日付リストの取得
+      date_list = params[:date_val].uniq
       params = event_params
       begin
         Event.transaction do
           # イベント情報の更新
-          @event.update_attributes!(title: params[:title], url: params[:url], fee: params[:fee], detail: params[:detail], date_list: @event.date_list)
+          @event.update_attributes!(title: params[:title], url: params[:url], fee: params[:fee], detail: params[:detail])
           # 日程の追加削除判定
-
         end
         redirect_to action: 'show', id: @event.id
       rescue => exception
