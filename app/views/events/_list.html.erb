@@ -8,6 +8,7 @@
       </div>
       <div class="card-action">
         <%= link_to('イベント詳細', "/events/#{list.id}", :action => 'show') %>
+        <%= link_to('イベント編集', "/events/edit/#{list.id}", :action => 'edit') %>
       </div>
     </div>
   </div>
