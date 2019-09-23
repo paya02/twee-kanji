@@ -11,14 +11,28 @@
 
   <body>
     <header>
-      <% if user_signed_in? %>
-        <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
-      <% else %>
-        <%= link_to 'ログイン', new_user_session_path %>
-      <% end %>
+      <div class="navbar-fixed">
+        <nav>
+          <div class="nav-wrapper teal nav-add lighten-1">
+            <%= link_to 'Twi-Kanji', root_path, :class => 'brand-logo' %>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+              <% if user_signed_in? %>
+                <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
+                <li><%= link_to 'イベント一覧', events_path %></li>
+              <% else %>
+                <li><%= link_to "ログイン", user_twitter_omniauth_authorize_path %></li>
+                <li>イベント一覧</li>
+              <% end %>
+              <li><%= link_to "イベント作成", events_add_path %></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
     </header>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <%= yield %>
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>

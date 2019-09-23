@@ -43,12 +43,16 @@ $(function(){
             $(modal).css({'left': x + 'px','top': y + 'px'});
         }
     });
+  
+  // materializeのselect要素を初期化(https://materializecss.com/select.html)
+  $(document).ready(function(){
+    $('select').formSelect();
+  });
 });
 </script>
 
 <% provide(:title, "イベント詳細") %>
-<h1>Events#show</h1>
-<p>Find me in app/views/events/show.html.erb</p>
+<h1>イベント詳細</h1>
 <table>
   <tr>
     <th>イベント名</th>
@@ -105,7 +109,7 @@ $(function(){
   <% if @event.user_id == @current_user_id %>
   <tr>
     <th></th>
-    <td><%= link_to('編集', "/events/edit/#{@event.id}", :action => 'edit', :class => 'waves-effect waves-light btn') %></td>
+    <td><%= link_to('編集', "/events/edit/#{@event.id}/", :action => 'edit', :class => 'waves-effect waves-light btn') %></td>
   </tr>
   <% end %>
 </table>
@@ -122,7 +126,7 @@ $(function(){
       </tr>
     <% end %>
   </table>
-  <a class="modal-close uk-button uk-button-primary">閉じる</a>
+  <a class="modal-close waves-effect waves-light btn">閉じる</a>
 </div>
 
 <!-- 日程入力 -->
@@ -131,19 +135,21 @@ $(function(){
     <% if obj.user_id == @current_user_id %>
       <p>ユーザ：<%= obj.user.username %></p>
       <%= form_tag({controller: 'events', action: 'adjustment'}, {method: :post}) do %>
-        <table id ="date_user" class="uk-table uk-table-striped">
-          <% @decisionDate.each do |date| %>
-            <tr>
-              <td><%= date.day.strftime('%Y/%m/%d') %></td>
-              <% @decisionUser.each do |user| %>
-                <% if user.day == date.day && user.user_id == @current_user_id %>
-                  <td><%= select_tag('propriety', options_for_select(@proprieties_for_options, user.propriety_before_type_cast), class:'option', name: 'propriety[]') %></td>
-                <% end %>
+        <% @decisionDate.each do |date| %>
+          <div class="row">
+            <div class="input-field col s6">
+              <%= date.day.strftime('%Y/%m/%d') %>
+            </div>
+            <% @decisionUser.each do |user| %>
+              <% if user.day == date.day && user.user_id == @current_user_id %>
+                <div class="input-field col s6">
+                  <%= select_tag('propriety', options_for_select(@proprieties_for_options, user.propriety_before_type_cast), class:'option', name: 'propriety[]') %>
+                </div>
               <% end %>
-            </tr>
-          <% end %>
-        </table>
-        <%= submit_tag "保存", class: "uk-button uk-button-primary" %>
+            <% end %>
+          </div>
+        <% end %>
+        <%= submit_tag "保存", class: "waves-effect waves-light btn" %>
       <% end %>
     <% end %>
   <% end %>
