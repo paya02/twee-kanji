@@ -95,3 +95,8 @@ td.ui-datepicker-week-end a.ui-state-highlight{
   padding:0px;
   margin:0px;
 }
+
+// materializeのボタンが標準で大文字なのを解除するため
+.text-flat {
+  text-transform: none;
+}
