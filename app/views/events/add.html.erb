@@ -31,7 +31,7 @@ $(function () {
 </script>
 
 <% provide(:title, "イベント作成") %>
-<h1>イベント作成</h1>
+<h2>イベント作成</h2>
 <% if @event.errors.any? %>
 <ul>
   <% @event.errors.full_messages.each do |err| %>
@@ -63,6 +63,11 @@ $(function () {
             </div>
           </div>
         <% end %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s6">
+        <span>メンバー追加</span>
       </div>
     </div>
     <div class="row">
