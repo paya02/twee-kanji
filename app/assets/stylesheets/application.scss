@@ -90,10 +90,19 @@ td.ui-datepicker-week-end a.ui-state-highlight{
   background-color: #C0C0C0;
 }
 
-// 汎用
+// 汎用 ---------------------
+// 空白削除
 .space-dell {
   padding:0px;
   margin:0px;
+}
+
+// Tableをスクロール
+.table-no-scroll {
+  display: block;
+  overflow-x: scroll;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
 }
 
 // materializeのボタンが標準で大文字なのを解除するため
