@@ -53,66 +53,70 @@ $(function(){
 
 <% provide(:title, "イベント詳細") %>
 <h2>イベント詳細</h2>
-<table>
-  <tr>
-    <th>イベント名</th>
-    <td><%= @event.title %></td>
-  </tr>
-  <tr>
-    <th></th>
-    <td>
-      <a data-target="decision_set" class="waves-effect waves-light btn modal-open">日程入力</a>
-      <a data-target="member_add" class="waves-effect waves-light btn modal-open">メンバー追加</a>
-    </td>
-  </tr>
-  <tr>
-    <th>開催日候補</th>
-    <td>
-      <table id ="date_list" class="uk-table uk-table-striped">
-        <tr>
-          <th>日付</th>
-          <th>(集計)</th>
-          <% @member.each do |obj| %>
-            <th><%= obj.user.username %></th>
-          <% end %> 
-        </tr>
-        <% @decisionDate.each do |date| %>
-          <tr>
-            <td><%= date.day.strftime('%Y/%m/%d') %></td>
-            <% @decisionDateSum.each do |dateSum| %>
-              <% if dateSum.day == date.day %>
-                <td><%= dateSum.proprieties_count %></td>
-              <% end %>
-            <% end %>
-            <% @decisionUser.each do |user| %>
-              <% if user.day == date.day %>
-                <td><%= user.propriety %></td>
-              <% end %>
-            <% end %>
-          </tr>
+<div class="row">
+  <div class="col s3"><b>イベント名</b></div>
+  <div class="col s9"><%= @event.title %></div>
+</div>
+<hr>
+<div class="row space-dell">
+  <div class="col s12">
+    <h5>開催日候補</h5>
+  </div>
+</div>
+<div class="row">
+  <div class="col s12">
+    <a data-target="decision_set" class="waves-effect waves-light btn modal-open">日程入力</a>
+    <% if @event.user_id == @current_user_id %>
+      <a data-target="member_add" class="waves-effect waves-light btn deep-orange lighten-1 modal-open">メンバー追加</a>
+      <a data-target="member_add" class="waves-effect waves-light btn deep-orange lighten-1 modal-open">メンバー削除</a>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <table class="responsive-table highlight">
+    <tr>
+      <th>日付</th>
+      <th>(集計)</th>
+      <% @member.each do |obj| %>
+        <th style="text-align: center;" <%= obj.user_id == @current_user_id ? 'class="teal lighten-5"'.html_safe : '' %>><%= obj.user.username %></th>
+      <% end %> 
+    </tr>
+    <% @decisionDate.each do |date| %>
+      <tr>
+        <td><%= date.day.strftime('%Y/%m/%d') %></td>
+        <% @decisionDateSum.each do |dateSum| %>
+          <% if dateSum.day == date.day %>
+            <td><%= dateSum.proprieties_count %></td>
+          <% end %>
         <% end %>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <th>URL(お店、イベントページなど)</th>
-    <td><%= @event.url %></td>
-  </tr>
-  <tr>
-    <th>会費</th>
-    <td><%= @event.fee %></td>
-  </tr>
-  <tr>
-    <th>イベント詳細</th>
-    <td><%= @event.detail %></td>
-  </tr>
-  <% if @event.user_id == @current_user_id %>
-  <tr>
-    <th></th>
-    <td><%= link_to('編集', "/events/edit/#{@event.id}/", :action => 'edit', :class => 'waves-effect waves-light btn') %></td>
-  </tr>
-  <% end %>
-</table>
+        <% @decisionUser.each do |user| %>
+          <% if user.day == date.day %>
+            <td style="text-align: center;" <%= user.user_id == @current_user_id ? 'class="teal lighten-5"'.html_safe : '' %>><%= user.propriety %></td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<br>
+<div class="row">
+  <div class="col s3"><b>URL(お店、イベントページなど)</b></div>
+  <div class="col s9"><%= @event.url %></div>
+</div>
+<div class="row">
+  <div class="col s3"><b>会費</b></div>
+  <div class="col s9"><%= @event.fee.to_s(:delimited) %></div>
+</div>
+<div class="row">
+  <div class="col s3"><b>イベント詳細</b></div>
+  <div class="col s9"><%= @event.detail %></div>
+</div>
+<% if @event.user_id == @current_user_id %>
+  <div class="row">
+    <%= link_to('編集', "/events/edit/#{@event.id}/", :action => 'edit', :class => 'waves-effect waves-light btn') %>
+  </div>
+<% end %>
 
 <!-- メンバー追加 -->
 <div id="member_add" class="modal-content">

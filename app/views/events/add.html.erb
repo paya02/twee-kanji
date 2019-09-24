@@ -47,33 +47,21 @@ $(function () {
         <label for="event_title">イベント名</label>
       </div>
     </div>
-    <span>開催日候補</span>
+    <h6>開催日候補</h6>
     <div class="row space-dell">
       <div class="input-field col s6 space-dell">
         <div id="datepicker"></div>
       </div>
     </div>
     <div class="row">
-      <div class="input-field col s6">
-        <% @date_cnt.times do |count| %>
-          <div class="row space-dell">
-            <div class="input-field col s12 space-dell">
-              <div class="col s6"><input type="text" id="date_val<%= count + 1 %>" name="date_val[]"></div>
-              <div class="col s1"><a href="javascript:void(0);" id="clear_date<%= count + 1 %>" class="clearDate"><i class="material-icons secondary-content">clear</i></a></div>
-            </div>
+      <% @date_cnt.times do |count| %>
+        <div class="input-field col s6 m3">
+          <div class="col s12">
+            <input type="text" id="date_val<%= count + 1 %>" name="date_val[]">
+            <a href="javascript:void(0);" id="clear_date<%= count + 1 %>" class="clearDate"><i class="material-icons secondary-content prefix">clear</i></a>
           </div>
-        <% end %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="input-field col s6">
-        <div class="row">
-          <span>メンバー追加</span>
         </div>
-        <div class="row">
-          <a data-target="member_add" class="waves-effect waves-light btn modal-open text-flat">Twitterリスト</a>
-        </div>
-      </div>
+      <% end %>
     </div>
     <div class="row">
       <div class="input-field col s4">
@@ -91,6 +79,6 @@ $(function () {
         <label for="event_detail">イベント詳細</label>
       </div>
     </div>
-    <%= form.submit "送信", class: "waves-effect waves-light btn", data: { disable_with: "送信中..." } %>
+    <%= form.submit "作成", class: "waves-effect waves-light btn", data: { disable_with: "作成中..." } %>
   <% end %>
 </div>
