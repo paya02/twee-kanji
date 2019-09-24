@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   post 'events/add', to: 'events#create'
 
   get 'events/:id', to: 'events#show'
-  post 'events/:id', to: 'events#adjustment'
+  post 'events/adjustment/:id', to: 'events#adjustment', as: 'event_adjustment'
+  post 'events/member-delete/:id', to: 'events#member_delete', as: 'member_delete'
   delete 'events/:id', to: 'events#destroy'
 
   get 'events/edit/:id', to: 'events#edit'

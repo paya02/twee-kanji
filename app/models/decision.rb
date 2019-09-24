@@ -39,6 +39,8 @@ class Decision < ApplicationRecord
     INNER JOIN members m
     ON d.event_id = m.event_id
     AND d.user_id = m.user_id
+    WHERE
+      d.event_id = #{event_id}
     ORDER BY
       m.ID
     , d.day

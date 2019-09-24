@@ -51,33 +51,35 @@ class EventsController < ApplicationController
     # TwitterAPI使用準備
     client = twitter_configuration
 
-    kanji = User.find(@event.user_id)
-    options = { count: 100 }
-    # 幹事ユーザのリスト取得
-    @owned_lists = client.owned_lists(kanji.nickname, options)
-    # リスト選択時は、リストユーザをメンバーに加えてから表示
-    if params[:list] then
-      client.list_members(kanji.nickname, params[:list]).each do |list|
-        @user = User.find_for_member(list)
-        if !Member.event_id(@event.id).user_id(@user.id).exists?
-          # まだメンバーでないユーザがいたら、メンバーを追加する
-          @member = Member.new
-          @member.event_id = @event.id
-          @member.user_id = @user.id
-          @member.save!
+    if current_user.id == @event.user_id then
+      kanji = User.find(@event.user_id)
+      options = { count: 100 }
+      # 幹事ユーザのリスト取得
+      @owned_lists = client.owned_lists(kanji.nickname, options)
+      # リスト選択時は、リストユーザをメンバーに加えてから表示
+      if params[:list] then
+        client.list_members(kanji.nickname, params[:list]).each do |list|
+          @user = User.find_for_member(list)
+          if !Member.event_id(@event.id).user_id(@user.id).exists?
+            # まだメンバーでないユーザがいたら、メンバーを追加する
+            @member = Member.new
+            @member.event_id = @event.id
+            @member.user_id = @user.id
+            @member.save!
 
-          # 日程判定モデルの保存
-          @decisionDate.each do |decision|
-            @decision = Decision.new
-            @decision.event_id = @event.id
-            @decision.user_id = @user.id
-            @decision.day = decision.day
-            @decision.save!
+            # 日程判定モデルの保存
+            @decisionDate.each do |decision|
+              @decision = Decision.new
+              @decision.event_id = @event.id
+              @decision.user_id = @user.id
+              @decision.day = decision.day
+              @decision.save!
+            end
           end
         end
       end
     end
-    
+
     # ※以下2つのは必ず同じ並び順で取得すること
     # メンバー
     @member = Member.where(event_id: @event.id).order(:id)
@@ -97,6 +99,7 @@ class EventsController < ApplicationController
     redirect_to action: 'index'
   end
 
+  # 日程調整
   def adjustment
     if request.post? then
       @event = Event.find(params[:id])
@@ -119,6 +122,26 @@ class EventsController < ApplicationController
       # end
       #render html: params[:propriety].length.to_s + '@' + @decisionDateUser.length.to_s
     end
+  end
+
+  # メンバー削除
+  def member_delete
+    begin
+      Member.transaction do
+        params[:delete_list].each do | id,chk |
+          # チェックボックスにチェックがついている場合
+          if chk == "1" then
+            # メンバーから削除
+            Member.where(event_id: params[:id], user_id: id).delete_all
+            # # 日程判定から削除
+            Decision.where(event_id: params[:id], user_id: id).delete_all
+          end
+        end
+      end
+    rescue => exception
+      # 削除に失敗したエラーメッセージ
+    end
+    redirect_to action: 'show', id: params[:id]
   end
 
   def add

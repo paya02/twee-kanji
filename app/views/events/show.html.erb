@@ -67,14 +67,14 @@ $(function(){
   <div class="col s12">
     <a data-target="decision_set" class="waves-effect waves-light btn modal-open">日程入力</a>
     <% if @event.user_id == @current_user_id %>
-      <a data-target="member_add" class="waves-effect waves-light btn deep-orange lighten-1 modal-open">メンバー追加</a>
-      <a data-target="member_add" class="waves-effect waves-light btn deep-orange lighten-1 modal-open">メンバー削除</a>
+      <a data-target="member_add" class="waves-effect waves-light btn yellow darken-3 modal-open">メンバー追加</a>
+      <a data-target="member_delete" class="waves-effect waves-light btn yellow darken-3 modal-open">メンバー削除</a>
     <% end %>
   </div>
 </div>
 
 <div class="row">
-  <table class="responsive-table highlight">
+  <table class="responsive-table highlight table-no-scroll">
     <tr>
       <th>日付</th>
       <th>(集計)</th>
@@ -100,13 +100,14 @@ $(function(){
   </table>
 </div>
 <br>
+<hr>
 <div class="row">
   <div class="col s3"><b>URL(お店HPなど)</b></div>
   <div class="col s9"><%= @event.url %></div>
 </div>
 <div class="row">
   <div class="col s3"><b>会費</b></div>
-  <div class="col s9"><%= @event.fee.to_s(:delimited) %></div>
+  <div class="col s9"><%= @event.fee.blank? ? '' : @event.fee.to_s(:delimited) %></div>
 </div>
 <div class="row">
   <div class="col s3"><b>イベント詳細</b></div>
@@ -118,43 +119,71 @@ $(function(){
   </div>
 <% end %>
 
-<!-- メンバー追加 -->
-<div id="member_add" class="modal-content">
-  <p>追加するメンバーを、Twitterリストから選択してください</p>
-  <table>
-    <% @owned_lists.each do |obj| %>
-      <tr>
-        <td><%= link_to(obj.name, :action => 'show', :list => obj.name) %></td>
-        <td><%= obj.member_count %></td>
-        <td><%= obj.description %></td>
-      </tr>
-    <% end %>
-  </table>
-  <a class="modal-close waves-effect waves-light btn">閉じる</a>
-</div>
-
 <!-- 日程入力 -->
 <div id="decision_set" class="modal-content">
-  <% @member.each do |obj| %>
-    <% if obj.user_id == @current_user_id %>
-      <p>ユーザ：<%= obj.user.username %></p>
-      <%= form_tag({controller: 'events', action: 'adjustment'}, {method: :post}) do %>
-        <% @decisionDate.each do |date| %>
-          <div class="row">
-            <div class="input-field col s6">
-              <%= date.day.strftime('%Y/%m/%d') %>
-            </div>
-            <% @decisionUser.each do |user| %>
-              <% if user.day == date.day && user.user_id == @current_user_id %>
-                <div class="input-field col s6">
-                  <%= select_tag('propriety', options_for_select(@proprieties_for_options, user.propriety_before_type_cast), class:'option', name: 'propriety[]') %>
-                </div>
+  <div class="row">
+    <% @member.each do |obj| %>
+      <% if obj.user_id == @current_user_id %>
+        <p>ログイン中のユーザー：<b><%= obj.user.username %></b></p>
+        <%= form_tag(event_adjustment_path, {method: :post, class: 'col s12'}) do %>
+          <% @decisionDate.each do |date| %>
+            <div class="row space-dell">
+              <div class="input-field col s6">
+                <%= date.day.strftime('%Y/%m/%d') %>
+              </div>
+              <% @decisionUser.each do |user| %>
+                <% if user.day == date.day && user.user_id == @current_user_id %>
+                  <div class="input-field col s6">
+                    <%= select_tag('propriety', options_for_select(@proprieties_for_options, user.propriety_before_type_cast), class:'option', name: 'propriety[]') %>
+                  </div>
+                <% end %>
               <% end %>
-            <% end %>
-          </div>
+            </div>
+          <% end %>
+          <%= submit_tag "保存", class: "waves-effect waves-light btn" %>
+          <a class="modal-close waves-effect waves-light btn">閉じる</a>
         <% end %>
-        <%= submit_tag "保存", class: "waves-effect waves-light btn" %>
       <% end %>
     <% end %>
-  <% end %>
+  </div>
+</div>
+
+<!-- メンバー追加 -->
+<div id="member_add" class="modal-content">
+  <div class="row">
+    <div class="col s12">
+      <p><b>追加するメンバーを、Twitterリストから選択してください</b></p>
+      <table class="striped responsive-table">
+        <% @owned_lists.each do |obj| %>
+          <tr>
+            <td><%= link_to(obj.name, :action => 'show', :list => obj.name) %></td>
+            <td style="text-align: right;"><%= obj.member_count %></td>
+            <td><%= obj.description %></td>
+          </tr>
+        <% end %>
+      </table>
+      <a class="modal-close waves-effect waves-light btn">閉じる</a>
+    </div>
+  </div>
+</div>
+
+<!-- メンバー削除 -->
+<div id="member_delete" class="modal-content">
+  <div class="row">
+    <%= form_tag(member_delete_path, {method: :post, class: 'col s12'}) do %>
+      <p><b>削除するメンバーにチェックを入れてください</b></p>
+      <% @member.each do |obj| %>
+        <% if obj.user_id != @current_user_id %>
+          <p>
+            <label>
+              <%= check_box "delete_list", obj.user_id %>
+              <span style="color:black;"><%= obj.user.username %></span>
+            </label>
+          </p>
+        <% end %>
+      <% end %>
+      <%= submit_tag "削除", class: "waves-effect waves-light btn red lighten-2" %>
+      <a class="modal-close waves-effect waves-light btn">閉じる</a>
+    <% end %>
+  </div>
 </div>
