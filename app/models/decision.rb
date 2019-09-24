@@ -8,6 +8,7 @@ class Decision < ApplicationRecord
     Decision.select(:day).where(event_id: event_id).group(:day).order(:day)
   }
 
+  # 日別評価集計値取得
   scope :decision_date_sum, ->(event_id) {
     # 件数取得部
     cnt = ""
@@ -30,7 +31,18 @@ class Decision < ApplicationRecord
     find_by_sql(sql)
   }
 
-  # def self.find_for_save(user_id, day, )
-  #   user = User.where(uid: auth.uid, provider: auth.provider).first
-  # end
+  # member_idの順で取得
+  scope :decision_order_member, ->(event_id) {
+    sql = <<-EOS
+    SELECT d.*
+    FROM decisions d
+    INNER JOIN members m
+    ON d.event_id = m.event_id
+    AND d.user_id = m.user_id
+    ORDER BY
+      m.ID
+    , d.day
+    EOS
+    find_by_sql(sql)
+  }
 end

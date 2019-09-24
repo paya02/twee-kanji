@@ -78,16 +78,23 @@ class EventsController < ApplicationController
       end
     end
     
+    # ※以下2つのは必ず同じ並び順で取得すること
     # メンバー
     @member = Member.where(event_id: @event.id).order(:id)
     # 日別人別評価
-    @decisionUser = Decision.where(event_id: @event.id).order(:day)
+    @decisionUser = Decision.decision_order_member(@event.id)
+
     # 可否ごとの件数をrelationで取得
     @decisionDateSum = Decision.decision_date_sum(@event.id)
     # ログイン中のユーザID(User)
     @current_user_id = current_user.id
     # リストボックスの選択肢
     @proprieties_for_options = Decision.proprieties
+  rescue Twitter::Error::TooManyRequests => error
+    # sleep error.rate_limit.reset_in
+    # retry
+    flash[:success] = "TwitterがAPIの利用を制限しています。少し待ってから再度実行してください。"
+    redirect_to action: 'index'
   end
 
   def adjustment
