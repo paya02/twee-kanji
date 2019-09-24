@@ -1,4 +1,7 @@
 <% provide(:title, "イベント一覧") %>
 <h2>イベント一覧</h2>
+<div class="row">
 <%= link_to('イベント作成', events_add_path, :class => 'waves-effect waves-light btn') %>
+<hr>
 <%= render :partial => "list", :collection => @event %>
+</div>

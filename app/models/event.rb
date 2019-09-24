@@ -14,6 +14,7 @@ class Event < ApplicationRecord
     , e.id
     , MIN(d.day) AS min_day
     , MAX(d.day) AS max_day
+    , (SELECT COUNT(*) FROM members m WHERE m.event_id = e.id) AS member_cnt
     FROM events e
     INNER JOIN decisions d
     ON e.id = d.event_id
