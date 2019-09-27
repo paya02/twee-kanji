@@ -162,14 +162,48 @@ class EventsController < ApplicationController
       # 日付リストの取得
       date_list = params[:date_val].uniq
       params = event_params
+      aiu = 0
       begin
         Event.transaction do
           # イベント情報の更新
           @event.update_attributes!(title: params[:title], url: params[:url], fee: params[:fee], detail: params[:detail])
-          # 日程の追加削除判定
+          
+          # 日程判定モデルの更新
+          # 1.現行で新にないものはデータDelete
+          @decisionDate = Decision.select(:day).where(event_id: @event.id).group(:day).order(:day)
+          @decisionDate.each do |date|
+            if !date_list.include?(date.day.strftime('%Y/%m/%d')) then
+              Decision.where(event_id: @event.id, day: date.day.strftime('%Y/%m/%d')).delete_all
+            end
+          end
+          # 2.新で現行にあるものは、新のリストから削除
+          old_date_list = @decisionDate.map(&:day)
+          old_date_list.each do |date|
+            if date_list.include?(date.strftime('%Y/%m/%d')) then
+              date_list.delete(date.strftime('%Y/%m/%d'))
+            end
+          end
+          aiu =1
+          # 3.残った新のリストをメンバー分追加
+          if !date_list.empty? then
+            @member = Member.where(event_id: @event.id).order(:id)
+            @member.each do |member|
+              date_list.each do |date|
+                if !date.blank? then
+                  @decision = Decision.new
+                  @decision.event_id = @event.id
+                  @decision.user_id = member.user_id
+                  @decision.day = Date.parse(date)
+                  @decision.save!
+                end
+              end
+            end
+          end
         end
         redirect_to action: 'show', id: @event.id
       rescue => exception
+        # エラーメッセージ
+        flash[:success] = "更新でエラー発生" + aiu.to_s
         # エラー処理
         redirect_to action: 'edit', id: @event.id
       end
