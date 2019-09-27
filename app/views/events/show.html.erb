@@ -44,8 +44,10 @@ $(function(){
         }
     });
   
-  // materializeのselect要素を初期化(https://materializecss.com/select.html)
   $(document).ready(function(){
+    // サイドバー初期化(https://materializecss.com/navbar.html)
+    $('.sidenav').sidenav();
+    // materializeのselect要素を初期化(https://materializecss.com/select.html)
     $('select').formSelect();
   });
 });

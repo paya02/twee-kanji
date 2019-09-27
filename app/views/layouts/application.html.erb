@@ -15,6 +15,7 @@
         <nav>
           <div class="nav-wrapper nav-add teal lighten-1">
             <%= link_to 'Twi-Kanji', root_path, :class => 'brand-logo' %>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
               <li><%= link_to "イベント作成", events_add_path %></li>
               <% if user_signed_in? %>
@@ -27,6 +28,17 @@
             </ul>
           </div>
         </nav>
+        <!-- モバイル用ハンバーガーメニュー -->
+        <ul class="sidenav" id="mobile-demo">
+          <li><%= link_to "イベント作成", events_add_path %></li>
+          <% if user_signed_in? %>
+            <li><%= link_to 'イベント一覧', events_path %></li>
+            <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
+          <% else %>
+            <li style="padding: 0px 10px;" class="grey-text">イベント一覧</li>
+            <li><%= link_to "ログイン", user_twitter_omniauth_authorize_path %></li>
+          <% end %>
+        </ul>
       </div>
     </header>
     <p class="notice"><%= notice %></p>
