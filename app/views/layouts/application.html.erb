@@ -46,11 +46,7 @@
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <p><%= flash[:success] %></p>
-    <div class="container">
-      <%= yield %>
-    </div>
-    <br>
-    <br>
+    <%= yield %>
     <!-- footer -->
     <footer class="page-footer teal lighten-1">
       <div class="container">
@@ -59,7 +55,7 @@
             <%= link_to root_path, class: 'white-text' do %>
               <h5 class="white-text">Twi-Kanji</h5> 
             <% end %>
-            <p class="grey-text text-lighten-4">Twi-Kanjiは、Twitterで幹事するサービスです</p>
+            <p class="grey-text text-lighten-4">Twi-Kanjiは、Twitterで"幹事する"サービスです</p>
           </div>
           <div class="col l4 offset-l2 s12">
             <ul>
