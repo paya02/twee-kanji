@@ -18,6 +18,17 @@
 
  @import 'materialize';
 
+ // 全体 ---------------------
+p {
+  padding:0px;
+  margin:0px;
+}
+
+body {
+  color: #354341;
+}
+
+// datepicker ---------------------
  /* 日曜日のカラー設定 */
 td.ui-datepicker-week-end:first-child a.ui-state-default{
   background-color: #ffecec;   /* 背景色を設定 */
@@ -37,7 +48,7 @@ td.ui-datepicker-week-end a.ui-state-highlight{
   background-color: #fffa90!important;
 }
 
-// モーダルダイアログ
+// モーダルダイアログ ---------------------
 .modal-content {
     position:fixed;
     display:none;
@@ -88,6 +99,50 @@ td.ui-datepicker-week-end a.ui-state-highlight{
 .btn-disabled {
   color:#fff;
   background-color: #C0C0C0;
+}
+
+// Top ---------------------
+// 参考 https://y-com.info/contents/?p=5941
+#main:before{
+  content:"";
+  display:block;
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:-1;
+  width:150%;
+  height:100vh;
+  background:image-url("bg.jpg") 100% 65% no-repeat;
+  background-size:cover;
+}
+.main-filter {
+  background-color: rgba(0,0,0,0.3);
+  height: 100vh;
+}
+
+#top {
+  margin: 0px;
+}
+
+#top p {
+  font-size: 18px;
+}
+
+#top ul {
+  list-style: circle;
+  padding-left: 40px;
+}
+
+#top #message{
+  width: 90%;
+  height: 80%;
+  background: #fff;
+  position: relative;
+  margin: 0 auto;
+  padding: 50px 60px;
+  // text-align: center;
+  box-sizing: border-box;
+  box-shadow: 10px 10px 24px rgba(0,0,0,0.5);
 }
 
 // 汎用 ---------------------

@@ -8,6 +8,32 @@ $(function () {
 });
 </script>
 
-<h1>トップページです</h1>
-<p>Find me in app/views/homes/index.html.erb</p>
-<%= link_to "Twitterアカウントでログイン", user_twitter_omniauth_authorize_path, :class => 'waves-effect waves-light btn text-flat' %>
+<div id="main">
+  <div class="main-filter">
+    <div class="container">
+      <div class="row">
+        <div id="top">
+          <br><br>
+          <div id="message">
+            <div class="col s12">
+              <h1 class="space-dell">Twi-Kanji</h1>
+            </div>
+              <p><b>Twi-Kanji</b>は、Twitterアカウントを使って、簡単な操作で<b>"幹事する"</b>サービスです。</p>
+              <p></p>
+              <ul>
+              <li><p>・日程の調整</p></li>
+              <li><p>・Twitterリストからメンバー追加</p></li>
+              <li><p>・イベントのリプライ通知(今後アップデート予定)</p></li>
+              </ul>
+              <p>など、面倒な幹事のお仕事をサポートします。</p>
+              <p>登録不要！Twitterアカウントだけで利用できます</p>
+              <br>
+              <%= link_to "使ってみる(要Twitterアカウント)", user_twitter_omniauth_authorize_path, :class => 'waves-effect waves-light btn text-flat' %>
+              <%= link_to "機能を体験してみる", user_twitter_omniauth_authorize_path, :class => 'waves-effect waves-light btn text-flat yellow darken-3' %>
+            </div>
+          </div>    
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
