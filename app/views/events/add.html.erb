@@ -33,13 +33,7 @@ $(function () {
 </script>
 
 <% provide(:title, "イベント作成") %>
-<% if @event.errors.any? %>
-<ul>
-  <% @event.errors.full_messages.each do |err| %>
-    <li><%= err %></li>
-  <% end %>
-</ul>
-<% end %>
+<%= render 'layouts/flash_messages', object: @event %>
 <div class="container">
   <div class="row">
     <h2>イベント作成</h2>

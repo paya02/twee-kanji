@@ -1,0 +1,14 @@
+<% unless flash.empty? %>
+  <script type="text/javascript">
+    <% flash.each do |key, value| %>
+      M.toast({html: '<%= value %>'})
+    <% end %>
+  </script>
+<% end %>
+<% unless object.errors.empty? %>
+  <script type="text/javascript">
+    <% object.errors.full_messages.each do |msg| %>
+      M.toast({html: '<%= msg %>'})
+    <% end %>
+  </script>
+<% end %>

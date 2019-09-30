@@ -6,6 +6,11 @@ class EventsController < ApplicationController
     @event = Event.event_list(current_user.id)
   end
 
+  def add
+    @date_cnt = APPSETTINGS::MAX_DATE_CNT
+    @event = Event.new
+  end
+
   def create
     if request.post? then
       # イベント・メンバーmodelを保存
@@ -37,7 +42,9 @@ class EventsController < ApplicationController
         end
         redirect_to action: 'show', id: @event.id
       rescue => exception
-        redirect_to action: 'add'
+        # redirect_to action: 'add'
+        @date_cnt = APPSETTINGS::MAX_DATE_CNT
+        render 'add'
       end
 
     end
@@ -142,11 +149,6 @@ class EventsController < ApplicationController
       # 削除に失敗したエラーメッセージ
     end
     redirect_to action: 'show', id: params[:id]
-  end
-
-  def add
-    @date_cnt = APPSETTINGS::MAX_DATE_CNT
-    @event = Event.new
   end
 
   def edit
