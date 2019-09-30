@@ -1,0 +1,17 @@
+# event
+ja:
+  activerecord:
+    models:
+      event: イベント
+    attributes:
+      event:
+        id: ID
+        title: タイトル
+        event_on: イベント日
+        start_at: 開始時刻
+        ending_at: 終了時刻
+        url: URL
+        fee: 会費
+        detail: イベント詳細
+        created_at: 登録日時
+        updated_at: 更新日時
