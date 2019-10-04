@@ -151,6 +151,10 @@ td.ui-datepicker-week-end a.ui-state-highlight{
 // $toast-color: #323232 !default;
 // $toast-text-color: #fff !default;
 // $toast-action-color: #eeff41;
+.alert-validates {
+  background-color: #323232;
+  color: #fff;
+}
 .alert-success {
   background-color: #b9f6ca;  // green accent-1
   color: #000;
