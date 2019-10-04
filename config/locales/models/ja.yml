@@ -1,11 +1,18 @@
-# event
 ja:
   activerecord:
     models:
+      user: ユーザー
       event: イベント
+      member: メンバー
+      decision: 判定
     attributes:
+      user:
+        email: Eメール
+        provider: アカウント種類
+        uid: ユニークID
+        username: 表示名
+        nickname: ユーザー名
       event:
-        id: ID
         title: タイトル
         event_on: イベント日
         start_at: 開始時刻
@@ -15,3 +22,9 @@ ja:
         detail: イベント詳細
         created_at: 登録日時
         updated_at: 更新日時
+      member:
+        comment: コメント
+        vote: 投票
+      decision:
+        day: 日付
+        propriety: 可否
