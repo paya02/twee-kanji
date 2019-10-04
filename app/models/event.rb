@@ -3,8 +3,9 @@ class Event < ApplicationRecord
   has_many :member, :dependent => :delete_all
 
   # validates
+  validates :user_id, presence: true
   validates :title, presence: true
-  validates :fee, numericality: true
+  validates :fee, :numericality => true, :allow_blank => true
 
   scope :event_list, ->(user_id) {
     sql = <<-EOS
