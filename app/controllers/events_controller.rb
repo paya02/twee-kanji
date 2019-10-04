@@ -13,7 +13,7 @@ class EventsController < ApplicationController
 
   def create
     if request.post? then
-      # イベント・メンバーmodelを保存
+      # イベント・メンバー・日程判定モデルを保存
       begin
         Event.transaction do
           @event = Event.new event_params
@@ -22,16 +22,9 @@ class EventsController < ApplicationController
           @event.save!
           
           # 重複削除して日程判定モデルの保存
-          date_list = params[:date_val].uniq
-          date_list.each do |date|
-            if !date.blank? then
-              # ex)2019/08/17
-              @decision = Decision.new
-              @decision.event_id = @event.id
-              @decision.user_id = @event.user_id
-              @decision.day = Date.parse(date)
-              @decision.save!
-            end
+          if !Decision.list_save(params[:date_val].uniq.map{|w| w.blank? ? '' :  Date.parse(w) }, @event.id, @event.user_id) then
+            flash.now[:validates] = '日付を1つ以上選択してください'
+            raise ActiveRecord::Rollback
           end
           
           # 幹事を参加メンバーに追加しておく
@@ -42,7 +35,6 @@ class EventsController < ApplicationController
         end
         redirect_to action: 'show', id: @event.id
       rescue => exception
-        # redirect_to action: 'add'
         @date_cnt = APPSETTINGS::MAX_DATE_CNT
         render 'add'
       end
@@ -75,12 +67,9 @@ class EventsController < ApplicationController
             @member.save!
 
             # 日程判定モデルの保存
-            @decisionDate.each do |decision|
-              @decision = Decision.new
-              @decision.event_id = @event.id
-              @decision.user_id = @user.id
-              @decision.day = decision.day
-              @decision.save!
+            if !Decision.list_save(@decisionDate.map(&:day), @event.id, @user.id) then
+              # エラー処理
+              raise ActiveRecord::Rollback
             end
           end
         end
