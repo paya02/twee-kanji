@@ -22,7 +22,7 @@ class EventsController < ApplicationController
           @event.save!
           
           # 重複削除して日程判定モデルの保存
-          if !Decision.list_save(params[:date_val].uniq.map{|w| w.blank? ? '' :  Date.parse(w) }, @event.id, @event.user_id) then
+          if Decision.list_save(params[:date_val].uniq.map{|w| w.blank? ? '' :  Date.parse(w) }, @event.id, @event.user_id) == false then
             flash.now[:validates] = '日付を1つ以上選択してください'
             raise ActiveRecord::Rollback
           end
@@ -55,23 +55,32 @@ class EventsController < ApplicationController
       options = { count: 100 }
       # 幹事ユーザのリスト取得
       @owned_lists = client.owned_lists(kanji.nickname, options)
+      
       # リスト選択時は、リストユーザをメンバーに加えてから表示
       if params[:list] then
-        client.list_members(kanji.nickname, params[:list]).each do |list|
-          @user = User.find_for_member(list)
-          if !Member.event_id(@event.id).user_id(@user.id).exists?
-            # まだメンバーでないユーザがいたら、メンバーを追加する
-            @member = Member.new
-            @member.event_id = @event.id
-            @member.user_id = @user.id
-            @member.save!
+        begin
+          Event.transaction do
+            client.list_members(kanji.nickname, params[:list]).each do |list|
+              @user = User.find_for_member(list)
+              if !Member.event_id(@event.id).user_id(@user.id).exists?
+                # まだメンバーでないユーザがいたら、メンバーを追加する
+                @member = Member.new
+                @member.event_id = @event.id
+                @member.user_id = @user.id
+                @member.save!
 
-            # 日程判定モデルの保存
-            if !Decision.list_save(@decisionDate.map(&:day), @event.id, @user.id) then
-              # エラー処理
-              raise ActiveRecord::Rollback
+                # 日程判定モデルの保存
+                if Decision.list_save(@decisionDate.map(&:day), @event.id, @user.id) == false then
+                  # エラー処理
+                  flash.now[:validates] = 'メンバー追加に失敗しました'
+                  raise ActiveRecord::Rollback
+                end
+              end
             end
           end
+        rescue => exception
+          # エラーメッセージ
+          flash.now[:validates] = 'メンバー追加に失敗しました'
         end
       end
     end
