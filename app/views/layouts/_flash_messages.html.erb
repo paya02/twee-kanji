@@ -1,0 +1,18 @@
+<% unless flash.empty? %>
+  <script type="text/javascript">
+    <% flash.each do |key, value| %>
+      var toastHTML = '<%= value %>';
+      var toastClass = 'alert-<%= key %>';
+      M.toast({html: toastHTML, displayLength: 5000, classes: toastClass})
+    <% end %>
+  </script>
+<% end %>
+<% unless object.errors.empty? %>
+  <script type="text/javascript">
+    <% object.errors.full_messages.each do |msg| %>
+      var toastHTML = '<%= msg %>';
+      var toastClass = 'alert-validates';
+      M.toast({html: toastHTML, displayLength: 5000, classes: toastClass})
+    <% end %>
+  </script>
+<% end %>

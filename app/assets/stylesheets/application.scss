@@ -145,6 +145,33 @@ td.ui-datepicker-week-end a.ui-state-highlight{
   box-shadow: 10px 10px 24px rgba(0,0,0,0.5);
 }
 
+// toast ---------------------
+// デフォルト
+// $toast-height: 48px !default;
+// $toast-color: #323232 !default;
+// $toast-text-color: #fff !default;
+// $toast-action-color: #eeff41;
+.alert-validates {
+  background-color: #323232;
+  color: #fff;
+}
+.alert-success {
+  background-color: #b9f6ca;  // green accent-1
+  color: #000;
+}
+.alert-info {
+  background-color: #80d8ff;  // light-blue accent-1
+  color: #000;
+}
+.alert-warning {
+  background-color: #ffe57f;  // amber accent-1
+  color: #000;
+}
+.alert-danger {
+  background-color: #ff8a80;  // red accent-1
+  color: #000;
+}
+
 // 汎用 ---------------------
 // 空白削除
 .space-dell {

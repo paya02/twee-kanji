@@ -4,9 +4,34 @@ class Decision < ApplicationRecord
 
   enum propriety:{ ー: 0, ×: 1, △: 2, ○: 3}
 
+  # validates
+  validates :event_id, presence: true
+  validates :user_id, presence: true
+  validates :day, presence: true
+
   scope :date, ->(event_id) {
     Decision.select(:day).where(event_id: event_id).group(:day).order(:day)
   }
+
+  # メソッド
+  # 日付存在チェック
+  def self.date_exists(date_list)
+    date_list.any? {|w| !w.blank? }
+  end
+
+  # 日付のリスト保存
+  def self.list_save(date_list, event_id, user_id)
+    date_list.each do |date|
+      if !date.blank? then
+        # ex)2019/08/17
+        decision = Decision.new
+        decision.event_id = event_id
+        decision.user_id = user_id
+        decision.day = date
+        decision.save!
+      end
+    end
+  end
 
   # 日別評価集計値取得
   scope :decision_date_sum, ->(event_id) {

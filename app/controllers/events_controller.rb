@@ -6,28 +6,32 @@ class EventsController < ApplicationController
     @event = Event.event_list(current_user.id)
   end
 
+  def add
+    @date_cnt = APPSETTINGS::MAX_DATE_CNT
+    @event = Event.new
+  end
+
   def create
     if request.post? then
-      # イベント・メンバーmodelを保存
+      @event = Event.new event_params
+
+      # 日付の入力チェック
+      if !Decision.date_exists(params[:date_val].uniq)
+        flash.now[:validates] = '日付を1つ以上選択してください'
+        @date_cnt = APPSETTINGS::MAX_DATE_CNT
+        render 'add'
+        return
+      end
+
+      # イベント・メンバー・日程判定モデルを保存
       begin
         Event.transaction do
-          @event = Event.new event_params
           # ログインユーザのイベントとして作成
           @event.user_id = current_user.id
           @event.save!
           
           # 重複削除して日程判定モデルの保存
-          date_list = params[:date_val].uniq
-          date_list.each do |date|
-            if !date.blank? then
-              # ex)2019/08/17
-              @decision = Decision.new
-              @decision.event_id = @event.id
-              @decision.user_id = @event.user_id
-              @decision.day = Date.parse(date)
-              @decision.save!
-            end
-          end
+          Decision.list_save(params[:date_val].uniq.map{|w| w.blank? ? '' :  Date.parse(w) }, @event.id, @event.user_id)
           
           # 幹事を参加メンバーに追加しておく
           @member = Member.new
@@ -37,9 +41,9 @@ class EventsController < ApplicationController
         end
         redirect_to action: 'show', id: @event.id
       rescue => exception
-        redirect_to action: 'add'
+        @date_cnt = APPSETTINGS::MAX_DATE_CNT
+        render 'add'
       end
-
     end
   end
 
@@ -56,26 +60,28 @@ class EventsController < ApplicationController
       options = { count: 100 }
       # 幹事ユーザのリスト取得
       @owned_lists = client.owned_lists(kanji.nickname, options)
+      
       # リスト選択時は、リストユーザをメンバーに加えてから表示
       if params[:list] then
-        client.list_members(kanji.nickname, params[:list]).each do |list|
-          @user = User.find_for_member(list)
-          if !Member.event_id(@event.id).user_id(@user.id).exists?
-            # まだメンバーでないユーザがいたら、メンバーを追加する
-            @member = Member.new
-            @member.event_id = @event.id
-            @member.user_id = @user.id
-            @member.save!
+        begin
+          Event.transaction do
+            client.list_members(kanji.nickname, params[:list]).each do |list|
+              @user = User.find_for_member(list)
+              if !Member.event_id(@event.id).user_id(@user.id).exists?
+                # まだメンバーでないユーザがいたら、メンバーを追加する
+                @member = Member.new
+                @member.event_id = @event.id
+                @member.user_id = @user.id
+                @member.save!
 
-            # 日程判定モデルの保存
-            @decisionDate.each do |decision|
-              @decision = Decision.new
-              @decision.event_id = @event.id
-              @decision.user_id = @user.id
-              @decision.day = decision.day
-              @decision.save!
+                # 日程判定モデルの保存
+                Decision.list_save(@decisionDate.map(&:day), @event.id, @user.id)
+              end
             end
           end
+        rescue => exception
+          # エラーメッセージ
+          flash.now[:validates] = 'メンバー追加に失敗しました'
         end
       end
     end
@@ -116,11 +122,6 @@ class EventsController < ApplicationController
       else
         # 値が不正ですのエラーメッセージ
       end
-      
-      # @decisionDateUser.each do |date|
-      #   if date.day.strftime('%Y/%m/%d') = 
-      # end
-      #render html: params[:propriety].length.to_s + '@' + @decisionDateUser.length.to_s
     end
   end
 
@@ -144,11 +145,6 @@ class EventsController < ApplicationController
     redirect_to action: 'show', id: params[:id]
   end
 
-  def add
-    @date_cnt = APPSETTINGS::MAX_DATE_CNT
-    @event = Event.new
-  end
-
   def edit
     @date_cnt = APPSETTINGS::MAX_DATE_CNT
     @event = Event.find(params[:id])
@@ -159,18 +155,26 @@ class EventsController < ApplicationController
   def update
     if request.patch? then
       @event = Event.find(params[:id])
+      @decisionDate = Decision.date(@event.id)
       # 日付リストの取得
       date_list = params[:date_val].uniq
       params = event_params
-      aiu = 0
+      
+      # 日付の入力チェック
+      if !Decision.date_exists(date_list)
+        flash.now[:validates] = '日付を1つ以上選択してください'
+        @date_cnt = APPSETTINGS::MAX_DATE_CNT
+        render 'edit'
+        return
+      end
+
       begin
         Event.transaction do
           # イベント情報の更新
           @event.update_attributes!(title: params[:title], url: params[:url], fee: params[:fee], detail: params[:detail])
           
-          # 日程判定モデルの更新
+          # 日程判定モデルの更新 --------------------
           # 1.現行で新にないものはデータDelete
-          @decisionDate = Decision.select(:day).where(event_id: @event.id).group(:day).order(:day)
           @decisionDate.each do |date|
             if !date_list.include?(date.day.strftime('%Y/%m/%d')) then
               Decision.where(event_id: @event.id, day: date.day.strftime('%Y/%m/%d')).delete_all
@@ -183,27 +187,20 @@ class EventsController < ApplicationController
               date_list.delete(date.strftime('%Y/%m/%d'))
             end
           end
-          aiu =1
           # 3.残った新のリストをメンバー分追加
           if !date_list.empty? then
             @member = Member.where(event_id: @event.id).order(:id)
             @member.each do |member|
-              date_list.each do |date|
-                if !date.blank? then
-                  @decision = Decision.new
-                  @decision.event_id = @event.id
-                  @decision.user_id = member.user_id
-                  @decision.day = Date.parse(date)
-                  @decision.save!
-                end
-              end
+              # 日程判定モデルの保存
+              Decision.list_save(date_list.map{|w| w.blank? ? '' :  Date.parse(w) }, @event.id, member.user_id)
             end
           end
+          # -------------------------------------
         end
         redirect_to action: 'show', id: @event.id
       rescue => exception
         # エラーメッセージ
-        flash[:success] = "更新でエラー発生" + aiu.to_s
+        flash[:success] = "更新でエラー発生"
         # エラー処理
         redirect_to action: 'edit', id: @event.id
       end
