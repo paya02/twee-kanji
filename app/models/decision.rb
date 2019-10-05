@@ -14,23 +14,23 @@ class Decision < ApplicationRecord
   }
 
   # メソッド
+  # 日付存在チェック
+  def self.date_exists(date_list)
+    date_list.any? {|w| !w.blank? }
+  end
+
+  # 日付のリスト保存
   def self.list_save(date_list, event_id, user_id)
-    if date_list.any? {|w| !w.blank? }
-      date_list.each do |date|
-        if !date.blank? then
-          # ex)2019/08/17
-          decision = Decision.new
-          decision.event_id = event_id
-          decision.user_id = user_id
-          decision.day = date
-          decision.save
-        end
+    date_list.each do |date|
+      if !date.blank? then
+        # ex)2019/08/17
+        decision = Decision.new
+        decision.event_id = event_id
+        decision.user_id = user_id
+        decision.day = date
+        decision.save!
       end
-      true
-    else
-      # 日付指定なしはエラー
-      false
-    end    
+    end
   end
 
   # 日別評価集計値取得
