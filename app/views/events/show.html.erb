@@ -158,12 +158,16 @@ $(function(){
     <div class="col s12">
       <p><b>追加するメンバーを、Twitterリストから選択してください</b></p>
       <table class="striped responsive-table">
-        <% @owned_lists.each do |obj| %>
-          <tr>
-            <td><%= link_to(obj.name, :action => 'show', :list => obj.name) %></td>
-            <td style="text-align: right;"><%= obj.member_count %></td>
-            <td><%= obj.description %></td>
-          </tr>
+        <% if @owned_lists.empty? then %>
+          <p>利用できるリストがありません。</p>
+        <% else %>
+          <% @owned_lists.each do |obj| %>
+            <tr>
+              <td><%= link_to(obj.name, :action => 'show', :list => obj.name) %></td>
+              <td style="text-align: right;"><%= obj.member_count %></td>
+              <td><%= obj.description %></td>
+            </tr>
+          <% end %>
         <% end %>
       </table>
       <a class="modal-close waves-effect waves-light btn">閉じる</a>
