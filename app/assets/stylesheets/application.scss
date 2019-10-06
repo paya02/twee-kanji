@@ -193,3 +193,16 @@ td.ui-datepicker-week-end a.ui-state-highlight{
 .text-flat {
   text-transform: none;
 }
+
+// 丸囲み文字
+.circle{
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #fff;
+  background: #e53935;
+  text-align:center;
+  line-height: 32px;
+  font-size: 22px;
+}

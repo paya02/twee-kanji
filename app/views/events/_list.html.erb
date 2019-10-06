@@ -1,16 +1,19 @@
-<div class="row">
-  <div class="col s12 l6">
-    <div class="card grey lighten-4">
-      <div class="card-content">
-        <span class="card-title"><%= list.title %></span>
-        <p><%= "候補日 #{list.min_day.strftime('%Y/%m/%d')}〜#{list.max_day.strftime('%Y/%m/%d')}" %></p>
-        <p><%= "参加人数 #{list.member_cnt.to_s}人" %></p>
-        <p><%= list.detail %></p>
-      </div>
-      <div class="card-action">
-        <%= link_to('イベント情報', "/events/#{list.id}", :action => 'show') %>
-        <%= link_to('イベント編集', "/events/edit/#{list.id}", :action => 'edit') %>
-      </div>
+<div class="col s12 m6">
+  <div class="card grey lighten-4">
+    <div class="card-content">
+      <span class="card-title">
+        <% if list.user_id == current_user_id %>
+          <a class="circle" href="javascript:void(0);">幹</a>
+        <% end %>
+        <%= list.title %>
+      </span>
+      <p><%= "候補日：#{list.min_day.strftime('%Y/%m/%d')}〜#{list.max_day.strftime('%Y/%m/%d')}" %></p>
+      <p><%= "参加人数： #{list.member_cnt.to_s}人" %></p>
+      <p><%= list.detail %></p>
+    </div>
+    <div class="card-action">
+      <%= link_to('イベント情報', "/events/#{list.id}", :action => 'show') %>
+      <%= link_to('イベント編集', "/events/edit/#{list.id}", :action => 'edit') %>
     </div>
   </div>
 </div>

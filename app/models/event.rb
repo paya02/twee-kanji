@@ -16,7 +16,8 @@ class Event < ApplicationRecord
     , e.ending_at AS ending_at
     , e.fee AS fee
     , e.detail AS detail
-    , e.id
+    , e.id AS id
+    , e.user_id AS user_id
     , MIN(d.day) AS min_day
     , MAX(d.day) AS max_day
     , (SELECT COUNT(*) FROM members m WHERE m.event_id = e.id) AS member_cnt
@@ -35,6 +36,7 @@ class Event < ApplicationRecord
     , e.detail
     , e.created_at
     , e.id
+    , e.user_id
     , ifnull(e.event_on, str_to_date('1000-01-01', '%Y-%M-%d'))
     ORDER BY
       ifnull(e.event_on, str_to_date('1000-01-01', '%Y-%M-%d'))

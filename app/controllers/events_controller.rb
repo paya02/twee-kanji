@@ -4,6 +4,7 @@ class EventsController < ApplicationController
   def index
     # ログインユーザのイベント取得
     @event = Event.event_list(current_user.id)
+    @current_user_id = current_user.id
   end
 
   def add
@@ -60,7 +61,7 @@ class EventsController < ApplicationController
       options = { count: 100 }
       # 幹事ユーザのリスト取得
       @owned_lists = client.owned_lists(kanji.nickname, options)
-      
+
       # リスト選択時は、リストユーザをメンバーに加えてから表示
       if params[:list] then
         begin
