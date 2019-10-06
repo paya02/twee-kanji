@@ -18,11 +18,12 @@
             <%= link_to 'Twi-Kanji', root_path, :class => 'brand-logo' %>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-              <li><%= link_to "イベント作成", events_add_path %></li>
               <% if user_signed_in? %>
+                <li><%= link_to "イベント作成", events_add_path %></li>
                 <li><%= link_to 'イベント一覧', events_path %></li>
                 <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
               <% else %>
+                <li style="padding: 0px 10px;" class="grey-text">イベント作成</li>
                 <li style="padding: 0px 10px;" class="grey-text">イベント一覧</li>
                 <li><%= link_to "ログイン", user_twitter_omniauth_authorize_path %></li>
               <% end %>
@@ -32,11 +33,12 @@
       </div>
       <!-- モバイル用ハンバーガーメニュー -->
       <ul class="sidenav" id="mobile-demo">
-        <li><%= link_to "イベント作成", events_add_path %></li>
         <% if user_signed_in? %>
+          <li><%= link_to "イベント作成", events_add_path %></li>
           <li><%= link_to 'イベント一覧', events_path %></li>
           <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
         <% else %>
+          <li><a href="javascript:void(0);">イベント作成</a></li>
           <li><a href="javascript:void(0);">イベント一覧</a></li>
           <li><%= link_to "ログイン", user_twitter_omniauth_authorize_path %></li>
         <% end %>
@@ -56,11 +58,12 @@
           </div>
           <div class="col l4 offset-l2 s12">
             <ul>
-              <li><%= link_to "イベント作成", events_add_path, class: 'grey-text text-lighten-3' %></li>
               <% if user_signed_in? %>
+                <li><%= link_to "イベント作成", events_add_path, class: 'grey-text text-lighten-3' %></li>
                 <li><%= link_to 'イベント一覧', events_path, class: 'grey-text text-lighten-3' %></li>
                 <li><%= link_to 'ログアウト', destroy_user_session_path, {method: :delete, class: 'grey-text text-lighten-3'} %></li>
               <% else %>
+                <li>イベント作成</li>
                 <li>イベント一覧</li>
                 <li><%= link_to "ログイン", user_twitter_omniauth_authorize_path, class: 'grey-text text-lighten-3' %></li>
               <% end %>
