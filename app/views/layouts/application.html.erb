@@ -23,8 +23,8 @@
                 <li><%= link_to 'イベント一覧', events_path %></li>
                 <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
               <% else %>
-                <li style="padding: 0px 10px;" class="grey-text">イベント作成</li>
-                <li style="padding: 0px 10px;" class="grey-text">イベント一覧</li>
+                <li style="padding: 0px 10px;" class="grey-text text-lighten-1">イベント作成</li>
+                <li style="padding: 0px 10px;" class="grey-text text-lighten-1">イベント一覧</li>
                 <li><%= link_to "ログイン", user_twitter_omniauth_authorize_path %></li>
               <% end %>
             </ul>
