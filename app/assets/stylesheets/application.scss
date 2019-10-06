@@ -165,11 +165,19 @@ td.ui-datepicker-week-end a.ui-state-highlight{
   background-color: #80d8ff;  // light-blue accent-1
   color: #000;
 }
+.alert-notice{
+  background-color: #80d8ff;  // light-blue accent-1
+  color: #000;
+}
 .alert-warning {
   background-color: #ffe57f;  // amber accent-1
   color: #000;
 }
 .alert-danger {
+  background-color: #ff8a80;  // red accent-1
+  color: #000;
+}
+.alert-alert {
   background-color: #ff8a80;  // red accent-1
   color: #000;
 }
