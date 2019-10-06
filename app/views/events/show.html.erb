@@ -158,7 +158,7 @@ $(function(){
     <div class="col s12">
       <p><b>追加するメンバーを、Twitterリストから選択してください</b></p>
       <table class="striped responsive-table">
-        <% if @owned_lists.empty? then %>
+        <% if !defined? @owned_lists then %>
           <p>利用できるリストがありません。</p>
         <% else %>
           <% @owned_lists.each do |obj| %>
