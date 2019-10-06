@@ -53,11 +53,13 @@ td.ui-datepicker-week-end a.ui-state-highlight{
     position:fixed;
     display:none;
     z-index:2;
-    width:50%;
-    margin:0;
-    padding:10px 20px;
+    // width:70%;
+    margin:50px 0px 0px 0px;
+    padding:20px 20px;
     border:2px solid #aaa;
     background:#fff;
+    max-height: 70vh;
+    overflow-y: auto;
 }
 
 .modal-content p {
