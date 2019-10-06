@@ -7,7 +7,7 @@
     <% end %>
   </script>
 <% end %>
-<% unless object.errors.empty? %>
+<% defined?(object) && unless object.errors.empty? %>
   <script type="text/javascript">
     <% object.errors.full_messages.each do |msg| %>
       var toastHTML = '<%= msg %>';

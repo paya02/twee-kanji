@@ -1,5 +1,6 @@
 class EventsController < ApplicationController
   protect_from_forgery
+  before_action :authenticate_user!
 
   def index
     # ログインユーザのイベント取得
@@ -61,7 +62,7 @@ class EventsController < ApplicationController
       options = { count: 100 }
       # 幹事ユーザのリスト取得
       @owned_lists = client.owned_lists(kanji.nickname, options)
-
+      
       # リスト選択時は、リストユーザをメンバーに加えてから表示
       if params[:list] then
         begin
