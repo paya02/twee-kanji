@@ -26,7 +26,11 @@ class Event < ApplicationRecord
     ON e.id = d.event_id
     AND e.user_id = d.user_id
     WHERE
-      e.user_id = #{user_id}
+      (e.user_id = #{user_id} 
+        OR (e.user_id != #{user_id} 
+          AND EXISTS(SELECT * FROM members m WHERE m.event_id = e.id AND m.user_id = #{user_id})
+        )
+      )
     GROUP BY
       e.title
     , e.event_on
