@@ -78,7 +78,11 @@ $(function () {
         </div>
       </div>
       <%= form.submit "保存", class: "waves-effect waves-light btn", data: { disable_with: "保存中..." } %>
-      <%= link_to "削除", "/events/#{@event.id}/", method: :delete, data: { confirm: "削除してもよろしいですか?" }, class: "btn-flat btn-disabled" %>
+      <% if session[:user_id] then %>
+        <a class="btn disabled">削除</a>
+      <% else %>
+        <%= link_to "削除", "/events/#{@event.id}/", method: :delete, data: { confirm: "削除してもよろしいですか?" }, class: "btn-flat btn-disabled black-text" %>
+      <% end %>
     <% end %>
   </div>
 </div>
