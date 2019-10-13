@@ -30,7 +30,7 @@ $(function () {
               <p>登録不要！Twitterアカウントだけで利用できます</p>
               <br>
               <%= link_to "使ってみる(要Twitterアカウント)", user_twitter_omniauth_authorize_path, :class => 'waves-effect waves-light btn text-flat' %>
-              <%= link_to "機能を体験してみる", user_twitter_omniauth_authorize_path, :class => 'waves-effect waves-light btn text-flat yellow darken-3' %>
+              <%= link_to "機能を体験してみる", {controller: :homes, action: :sample_login}, :class => 'waves-effect waves-light btn text-flat yellow darken-3' %>
             </div>
           </div>    
         </div>
