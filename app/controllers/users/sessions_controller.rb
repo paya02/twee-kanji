@@ -1,20 +1,22 @@
 class Users::SessionsController < Devise::SessionsController
-  skip_before_action :verify_signed_out_user, :only => :destroy
+  # skip_before_action :verify_signed_out_user, :only => :destroy
 
   def new
     super
   end
  
   def create
-    super
+    #emailだけでログインできるように変更
+    self.resource = User.where(:email => params[:user]['email']).first
+
+    set_flash_message(:notice, :signed_in) if is_flashing_format?
+    sign_in(resource_name, resource)
+    yield resource if block_given?
+    # respond_with resource, :location => after_sign_in_path_for(resource)
+    redirect_to events_url
   end
  
   def destroy
-    if session[:user_id] then
-      session.delete(:user_id)
-      redirect_to root_url, :notice => I18n.t('devise.sessions.signed_out')
-    else
-      super
-    end
+    super
   end
 end

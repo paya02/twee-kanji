@@ -14,7 +14,7 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: {
     omniauth_callbacks: 'omniauth_callbacks',
-    sessions: 'users/sessions'
+    sessions: 'users/sessions',
   }
   
   devise_scope :user do
@@ -23,5 +23,4 @@ Rails.application.routes.draw do
 
   root to: 'homes#index'
   get 'homes/index'
-  get 'homes/sample_login', to: 'homes#sample_login'
 end
