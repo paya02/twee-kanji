@@ -20,7 +20,7 @@ User.create!(
 
 (1..3).each do |cnt|
   User.create!(
-    email: 'test_twitter@example.com',
+    email: "test_twitter#{cnt.to_s}@example.com",
     encrypted_password: 'test123',
     reset_password_token: 'test',
     reset_password_sent_at: nil,
