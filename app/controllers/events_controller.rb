@@ -61,9 +61,10 @@ class EventsController < ApplicationController
         # サンプルユーザ
         @owned_lists = []
         (1..3).each do |idx|
-          list = SampleClient.new(idx)
+          list = SampleClient.new(idx, 0)
           @owned_lists.push(list)
         end
+        client = SampleUser.new
       else
         # TwitterAPI使用準備
         client = twitter_configuration
