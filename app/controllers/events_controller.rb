@@ -53,15 +53,24 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     # 日程
     @decisionDate = Decision.select(:day).where(event_id: @event.id).group(:day).order(:day)
-
-    # TwitterAPI使用準備
-    client = twitter_configuration
-
+    
     if current_user.id == @event.user_id then
       kanji = User.find(@event.user_id)
-      options = { count: 100 }
-      # 幹事ユーザのリスト取得
-      @owned_lists = client.owned_lists(kanji.nickname, options)
+      
+      if current_user.id.to_s == ENV['SAMPLE_USER_ID'] then
+        # サンプルユーザ
+        @owned_lists = []
+        (1..3).each do |idx|
+          list = SampleClient.new(idx)
+          @owned_lists.push(list)
+        end
+      else
+        # TwitterAPI使用準備
+        client = twitter_configuration
+        options = { count: 100 }
+        # 幹事ユーザのリスト取得
+        @owned_lists = client.owned_lists(kanji.nickname, options)
+      end
       
       # リスト選択時は、リストユーザをメンバーに加えてから表示
       if params[:list] then
