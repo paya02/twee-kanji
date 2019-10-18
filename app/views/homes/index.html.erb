@@ -33,7 +33,12 @@ $(function () {
               <%= form_for(:user, :url => session_path(:user)) do |f| %>
                 <%= f.hidden_field :email, {value: 'test_twitter@example.com'} %>
                 <br>
-                <%= f.submit '機能を体験してみる', :class => 'btn text-flat yellow darken-3 white-text' %>
+                <%= f.submit '機能を体験してみる(幹事)', :class => 'waves-effect waves-light btn text-flat yellow darken-3' %>
+              <% end %>
+              <%= form_for(:user, :url => session_path(:user)) do |f| %>
+                <%= f.hidden_field :email, {value: 'test_twitter1@example.com'} %>
+                <br>
+                <%= f.submit '機能を体験してみる(参加者)', :class => 'waves-effect waves-light btn text-flat yellow darken-3' %>
               <% end %>
             </div>
           </div>    
