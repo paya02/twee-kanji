@@ -69,5 +69,10 @@ group :test do
   gem 'chromedriver-helper'
 end
 
+group :development, :staging do
+  gem 'rubocop', '~> 0.75.1', require: false
+  gem 'rubocop-rails', require: false
+end
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
