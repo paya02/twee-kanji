@@ -12,10 +12,13 @@ Rails.application.routes.draw do
   get 'events/edit/:id', to: 'events#edit'
   patch 'events/edit/:id', to: 'events#update'
 
-  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
+  devise_for :users, controllers: {
+    omniauth_callbacks: 'omniauth_callbacks',
+    sessions: 'users/sessions',
+  }
   
   devise_scope :user do
-    get 'login', to: 'devise/sessions#new'
+    get 'login', to: 'users/sessions#new'
   end
 
   root to: 'homes#index'

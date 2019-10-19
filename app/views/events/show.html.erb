@@ -160,6 +160,7 @@ $(function(){
       <p><b>追加するメンバーを、Twitterリストから選択してください</b></p>
       <table class="striped responsive-table">
         <% if defined? @owned_lists then %>
+          <th>リスト名</th><th>人数</th><th>詳細</th>
           <% @owned_lists.each do |obj| %>
             <tr>
               <td><%= link_to(obj.name, :action => 'show', :list => obj.name) %></td>
