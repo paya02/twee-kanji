@@ -43,6 +43,7 @@ class EventsController < ApplicationController
         end
         redirect_to action: 'show', id: @event.id
       rescue => exception
+        logger.error('エラー：' + exception.message)
         @date_cnt = APPSETTINGS::MAX_DATE_CNT
         render 'add'
       end
@@ -93,7 +94,8 @@ class EventsController < ApplicationController
           end
         rescue => exception
           # エラーメッセージ
-          flash.now[:validates] = 'メンバー追加に失敗しました'
+          flash.now[:validates] = 'メンバーの追加に失敗しました'
+          logger.error('エラー：' + exception.message)
         end
       end
     end
@@ -113,7 +115,7 @@ class EventsController < ApplicationController
   rescue Twitter::Error::TooManyRequests => error
     # sleep error.rate_limit.reset_in
     # retry
-    flash[:success] = "TwitterがAPIの利用を制限しています。少し待ってから再度実行してください。"
+    flash[:validates] = "TwitterがAPIの利用を制限しています。少し待ってから再度実行してください。"
     redirect_to action: 'index'
   end
 
@@ -153,6 +155,8 @@ class EventsController < ApplicationController
       end
     rescue => exception
       # 削除に失敗したエラーメッセージ
+      flash[:validates] = "メンバーの削除に失敗しました"
+      logger.error('エラー：' + exception.message)
     end
     redirect_to action: 'show', id: params[:id]
   end
@@ -212,7 +216,8 @@ class EventsController < ApplicationController
         redirect_to action: 'show', id: @event.id
       rescue => exception
         # エラーメッセージ
-        flash[:success] = "更新でエラー発生"
+        flash[:validates] = "イベント情報の更新に失敗しました"
+        logger.error('エラー：' + exception.message)
         # エラー処理
         redirect_to action: 'edit', id: @event.id
       end
