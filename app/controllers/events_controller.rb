@@ -231,7 +231,7 @@ class EventsController < ApplicationController
   end
 
   def twitter_configuration
-    return client = Twitter::REST::Client.new do |config|
+    return Twitter::REST::Client.new do |config|
       config.consumer_key        = Rails.application.credentials.twitter[:twitter_api_key]
       config.consumer_secret     = Rails.application.credentials.twitter[:twitter_api_secret]
       config.access_token        = Rails.application.credentials.twitter[:twitter_access_key]
