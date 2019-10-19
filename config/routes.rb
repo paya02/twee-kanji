@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     omniauth_callbacks: 'omniauth_callbacks',
     sessions: 'users/sessions',
-  }
+  }, skip: [:passwords, :registrations]
   
   devise_scope :user do
     get 'login', to: 'users/sessions#new'
