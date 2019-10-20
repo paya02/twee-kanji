@@ -34,22 +34,22 @@ end
 
 # event ---------------------------------
 Event.create!(
-  user_id: 21,
+  user_id: 1,
   title: 'サンプルイベント', 
   detail: 'サンプルイベントの詳細です。参加者の方により詳細なイベントの情報を伝えることができます。' 
 );
 
 # member ---------------------------------
 Member.create!(
-  event_id: 139,
-  user_id: 21
+  event_id: 1,
+  user_id: 1
 );
 
 # decisions ---------------------------------
 (5..7).each do |cnt|
   Decision.create!(
-    event_id: 139,
-    user_id: 21,
+    event_id: 1,
+    user_id: 1,
     day: Date.parse("2019/10/2" + cnt.to_s)
   );
 end
