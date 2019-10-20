@@ -91,7 +91,7 @@ $(function(){
           <td><%= date.day.strftime('%Y/%m/%d') %></td>
           <% @decisionDateSum.each do |dateSum| %>
             <% if dateSum.day == date.day %>
-              <td><%= dateSum.proprieties_count %></td>
+              <td><%= dateSum.proprieties_count.force_encoding("utf-8") %></td>
             <% end %>
           <% end %>
           <% @decisionUser.each do |user| %>
