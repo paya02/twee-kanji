@@ -39,7 +39,7 @@ $(function () {
     <h2>イベント編集</h2>
     <%= form_for(@event, url:{controller:'events', action:'update', id: @event.id}, html: {class: 'col s12'}) do |form| %>
       <div class="row">
-        <div class="input-field col s6">
+        <div class="input-field col s12 m6">
           <%= form.text_field :title, {id: 'event_title', autofocus: true} %>
           <label for="event_title">イベント名</label>
         </div>
@@ -62,17 +62,17 @@ $(function () {
         <% end %>
       </div>
       <div class="row">
-        <div class="input-field col s4">
+        <div class="input-field col s12 m4">
           <%= form.text_field :url, {id: 'event_url'} %>
           <label for="event_url">URL(お店HPなど)</label>
         </div>
-        <div class="input-field col s2">
+        <div class="input-field col s12 m2">
           <%= form.number_field :fee, min:0, max:99999999, step:1, id: 'event_fee' %>
           <label for="event_fee">会費</label>
         </div>
       </div>
       <div class="row">
-        <div class="input-field col s12">
+        <div class="input-field col s12 m6">
           <%= form.text_area :detail, {cols:30, rows:3, class: 'materialize-textarea', id: 'event_detail'} %>
           <label for="event_detail">イベント詳細</label>
         </div>
