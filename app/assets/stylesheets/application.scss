@@ -121,6 +121,16 @@ td.ui-datepicker-week-end a.ui-state-highlight{
   background-color: rgba(0,0,0,0.3);
   height: 100vh;
 }
+@media(max-width:992px){
+  .main-filter {
+    height:70vh;
+  }
+}
+@media(max-width:600px){
+  .main-filter {
+    height:100vh;
+  }
+}
 
 #top {
   margin: 0px;
@@ -129,10 +139,30 @@ td.ui-datepicker-week-end a.ui-state-highlight{
 #top p {
   font-size: 18px;
 }
+@media(max-width:992px){
+  #top p {
+    font-size: 18px;
+  }
+}
+@media(max-width:600px){
+  #top p {
+    font-size: 15px;
+  }
+}
 
 #top ul {
   list-style: circle;
   padding-left: 40px;
+}
+@media(max-width:992px){
+  #top ul {
+    padding: 20px;
+  }
+}
+@media(max-width:600px){
+  #top ul {
+    padding: 0px;
+  }
 }
 
 #top #message{
@@ -141,14 +171,43 @@ td.ui-datepicker-week-end a.ui-state-highlight{
   background: #fff;
   position: relative;
   margin: 0 auto;
-  padding: 50px 60px;
+  padding: 50px;
   // text-align: center;
   box-sizing: border-box;
   box-shadow: 10px 10px 24px rgba(0,0,0,0.5);
 }
+@media(max-width:992px){
+  #top #message{
+    padding: 20px;
+  }
+}
+@media(max-width:600px){
+  #top #message{
+    padding: 20px;
+  }
+}
 
-#top .login-btn {
+#top .login-btn{
   width: 250px;
+}
+@media(max-width:992px){
+  #top .login-btn{
+    width: 100%;
+  }
+}
+@media(max-width:600px){
+  #top .login-btn{
+    width: 100%;
+  }
+}
+
+#Operation-board .edit-btn {
+  width: 120px;
+}
+@media(max-width:600px){
+  #Operation-board .edit-btn {
+    width: 30%;
+  }
 }
 
 // card-content

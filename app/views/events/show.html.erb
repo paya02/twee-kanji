@@ -58,8 +58,8 @@ $(function(){
 <div class="container">
   <h2>イベント情報</h2>
   <div class="row">
-    <div class="col s3"><b>イベント名</b></div>
-    <div class="col s9"><%= @event.title %></div>
+    <div class="col s4"><b>イベント名</b></div>
+    <div class="col s8"><%= @event.title %></div>
   </div>
   <hr>
   <div class="row space-dell">
@@ -69,11 +69,13 @@ $(function(){
   </div>
   <div class="row">
     <div class="col s12">
-      <a data-target="decision_set" class="waves-effect waves-light btn modal-open">日程入力</a>
-      <% if @event.user_id == @current_user_id %>
-        <a data-target="member_add" class="waves-effect waves-light btn yellow darken-3 modal-open">メンバー追加</a>
-        <a data-target="member_delete" class="waves-effect waves-light btn yellow darken-3 modal-open">メンバー削除</a>
-      <% end %>
+      <div id="Operation-board">
+        <a data-target="decision_set" class="waves-effect waves-light btn modal-open edit-btn">日程入力</a>
+        <% if @event.user_id == @current_user_id %>
+          <a data-target="member_add" class="waves-effect waves-light btn yellow darken-3 modal-open edit-btn">メンバー追加</a>
+          <a data-target="member_delete" class="waves-effect waves-light btn yellow darken-3 modal-open edit-btn">メンバー削除</a>
+        <% end %>
+      </div>
     </div>
   </div>
 
@@ -106,16 +108,16 @@ $(function(){
   <br>
   <hr>
   <div class="row">
-    <div class="col s3"><b>URL(お店HPなど)</b></div>
-    <div class="col s9"><%= @event.url %></div>
+    <div class="col s4"><b>URL<br>(お店HPなど)</b></div>
+    <div class="col s8"><%= @event.url %></div>
   </div>
   <div class="row">
-    <div class="col s3"><b>会費</b></div>
-    <div class="col s9"><%= @event.fee.blank? ? '' : @event.fee.to_s(:delimited) %></div>
+    <div class="col s4"><b>会費</b></div>
+    <div class="col s8"><%= @event.fee.blank? ? '' : @event.fee.to_s(:delimited) %></div>
   </div>
   <div class="row">
-    <div class="col s3"><b>イベント詳細</b></div>
-    <div class="col s9"><%= @event.detail %></div>
+    <div class="col s4"><b>イベント詳細</b></div>
+    <div class="col s8"><%= @event.detail %></div>
   </div>
   <% if @event.user_id == @current_user_id %>
     <div class="row">
