@@ -68,9 +68,11 @@ $(function(){
     </div>
   </div>
   <div class="row">
-    <div class="col s12">
-      <div id="Operation-board">
+    <div id="operation-board">
+      <div class="col s12 m2">
         <a data-target="decision_set" class="waves-effect waves-light btn modal-open edit-btn">日程入力</a>
+      </div>
+      <div class="col s12 m6">
         <% if @event.user_id == @current_user_id %>
           <a data-target="member_add" class="waves-effect waves-light btn yellow darken-3 modal-open edit-btn">メンバー追加</a>
           <a data-target="member_delete" class="waves-effect waves-light btn yellow darken-3 modal-open edit-btn">メンバー削除</a>

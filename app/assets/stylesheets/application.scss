@@ -201,14 +201,14 @@ td.ui-datepicker-week-end a.ui-state-highlight{
   }
 }
 
-#Operation-board .edit-btn {
-  width: 120px;
+#operation-board .edit-btn {
+  margin: 3px 3px;
 }
-@media(max-width:600px){
-  #Operation-board .edit-btn {
-    width: 30%;
-  }
-}
+// @media(max-width:600px){
+//   #operation-board .edit-btn {
+//     margin: 0 5px;
+//   }
+// }
 
 // card-content
 .card-add-style {
