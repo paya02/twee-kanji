@@ -32,3 +32,6 @@ mysql-data/
 
 # dotenv-rails
 .env*
+
+# rubocop
+.rubocop*
