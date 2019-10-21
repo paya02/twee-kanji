@@ -149,6 +149,7 @@ $(function(){
               <% end %>
             </div>
           <% end %>
+          <div class="list-space"></div>
           <%= submit_tag "保存", class: "waves-effect waves-light btn" %>
           <a class="modal-close waves-effect waves-light btn">閉じる</a>
         <% end %>
@@ -162,7 +163,7 @@ $(function(){
   <div class="row">
     <div class="col s12">
       <p><b>追加するメンバーを、Twitterリストから選択してください</b></p>
-      <table class="striped responsive-table">
+      <table class="striped">
         <% if defined? @owned_lists then %>
           <th>リスト名</th><th>人数</th><th>詳細</th>
           <% @owned_lists.each do |obj| %>

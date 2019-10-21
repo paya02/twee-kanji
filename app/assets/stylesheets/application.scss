@@ -98,9 +98,47 @@ td.ui-datepicker-week-end a.ui-state-highlight{
     color:#fff;
 }
 
-.btn-disabled {
-  color:#fff;
-  background-color: #C0C0C0;
+// 日程入力
+#decision_set{
+  width: 30%;
+}
+@media(max-width:992px){
+  #decision_set{
+    width:50%;
+  }
+}
+@media(max-width:600px){
+  #decision_set{
+    width:85%;
+  }
+}
+#decision_set .list-space {
+  height: 75px;
+}
+
+// メンバー追加画面
+#member_add {
+  width: 50%;
+}
+@media(max-width:992px){
+  #member_add {
+    width: 85%;
+  }
+}
+
+// メンバー削除
+#member_delete {
+  width: 30%;
+}
+@media(max-width:992px){
+  #member_delete {
+    width: 50%;
+  }
+}
+@media(max-width:600px){
+  #member_delete{
+    width:85%;
+  }
 }
 
 // Top ---------------------
@@ -201,14 +239,10 @@ td.ui-datepicker-week-end a.ui-state-highlight{
   }
 }
 
+// 操作ボタン
 #operation-board .edit-btn {
   margin: 3px 3px;
 }
-// @media(max-width:600px){
-//   #operation-board .edit-btn {
-//     margin: 0 5px;
-//   }
-// }
 
 // card-content
 .card-add-style {
@@ -251,6 +285,12 @@ td.ui-datepicker-week-end a.ui-state-highlight{
 }
 
 // 汎用 ---------------------
+// 使用不可ボタン
+.btn-disabled {
+  color:#fff;
+  background-color: #C0C0C0;
+}
+
 // 空白削除
 .space-dell {
   padding:0px;
