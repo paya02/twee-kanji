@@ -13,7 +13,6 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       flash[:success] = I18n.t('devise.omniauth_callbacks.success', kind: provider.capitalize)
       sign_in_and_redirect @user, event: :authentication
     else
-      # 前
       #session["devise.#{provider}_data"] = request.env['omniauth.auth']
       redirect_to root_url
     end

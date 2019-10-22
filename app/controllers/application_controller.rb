@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  # alias_method :devise_current_user, :current_user
 
   protected
   def authenticate_user!

@@ -113,8 +113,7 @@ class EventsController < ApplicationController
     # リストボックスの選択肢
     @proprieties_for_options = Decision.proprieties
   rescue Twitter::Error::TooManyRequests => error
-    # sleep error.rate_limit.reset_in
-    # retry
+    # Twitterのエラー
     flash[:validates] = "TwitterがAPIの利用を制限しています。少し待ってから再度実行してください。"
     redirect_to action: 'index'
   end
