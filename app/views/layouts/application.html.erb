@@ -34,6 +34,7 @@
       </div>
       <!-- モバイル用ハンバーガーメニュー -->
       <ul class="sidenav" id="mobile-demo">
+        <li><%= link_to 'トップページ', root_path %></li>
         <% if user_signed_in? %>
           <li><%= link_to "イベント作成", events_add_path %></li>
           <li><%= link_to 'イベント一覧', events_path %></li>
@@ -59,6 +60,7 @@
           </div>
           <div class="col l4 offset-l2 s12">
             <ul>
+              <li><%= link_to 'トップページ', root_path, class: 'grey-text text-lighten-3' %></li>
               <% if user_signed_in? %>
                 <li><%= link_to "イベント作成", events_add_path, class: 'grey-text text-lighten-3' %></li>
                 <li><%= link_to 'イベント一覧', events_path, class: 'grey-text text-lighten-3' %></li>
