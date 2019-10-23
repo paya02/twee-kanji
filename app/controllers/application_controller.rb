@@ -9,4 +9,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def event_member(event_id, user_id)
+    unless Member.where(event_id: event_id, user_id: user_id).exists?
+      redirect_to root_path, :notice => '閲覧する権限がありません。'
+    end
+  end
 end

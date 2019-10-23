@@ -1,6 +1,9 @@
 class EventsController < ApplicationController
   protect_from_forgery
   before_action :authenticate_user!
+  before_action -> {
+    event_member(params[:id], current_user.id)
+  }, only:[:show, :edit, :update]
 
   def index
     # ログインユーザのイベント取得
