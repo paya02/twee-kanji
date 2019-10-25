@@ -8,78 +8,15 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <%= analytics_init %>
+    <%= analytics_init if Rails.env.production? %>
   </head>
 
   <body>
     <!-- header -->
-    <header>
-      <div class="navbar-fixed">
-        <nav>
-          <div class="nav-wrapper nav-add teal lighten-1">
-            <%= link_to 'Twi-Kanji', root_path, :class => 'brand-logo' %>
-            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-              <% if user_signed_in? %>
-                <li><%= link_to "イベント作成", events_add_path %></li>
-                <li><%= link_to 'イベント一覧', events_path %></li>
-                <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
-              <% else %>
-                <li style="padding: 0px 10px;" class="grey-text text-lighten-1">イベント作成</li>
-                <li style="padding: 0px 10px;" class="grey-text text-lighten-1">イベント一覧</li>
-                <li><%= link_to "ログイン", user_twitter_omniauth_authorize_path %></li>
-              <% end %>
-            </ul>
-          </div>
-        </nav>
-      </div>
-      <!-- モバイル用ハンバーガーメニュー -->
-      <ul class="sidenav" id="mobile-demo">
-        <li><%= link_to 'トップページ', root_path %></li>
-        <% if user_signed_in? %>
-          <li><%= link_to "イベント作成", events_add_path %></li>
-          <li><%= link_to 'イベント一覧', events_path %></li>
-          <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
-        <% else %>
-          <li><a href="javascript:void(0);">イベント作成</a></li>
-          <li><a href="javascript:void(0);">イベント一覧</a></li>
-          <li><%= link_to "ログイン", user_twitter_omniauth_authorize_path %></li>
-        <% end %>
-      </ul>
-    </header>
+    <%= render template:'layouts/event_header' %>
     <!-- main -->
     <%= yield %>
     <!-- footer -->
-    <footer class="page-footer teal lighten-1">
-      <div class="container">
-        <div class="row">
-          <div class="col l6 s12">
-            <%= link_to root_path, class: 'white-text' do %>
-              <h5 class="white-text">Twi-Kanji</h5> 
-            <% end %>
-            <p class="grey-text text-lighten-4">Twi-Kanjiは、Twitterで"幹事する"サービスです</p>
-          </div>
-          <div class="col l4 offset-l2 s12">
-            <ul>
-              <li><%= link_to 'トップページ', root_path, class: 'grey-text text-lighten-3' %></li>
-              <% if user_signed_in? %>
-                <li><%= link_to "イベント作成", events_add_path, class: 'grey-text text-lighten-3' %></li>
-                <li><%= link_to 'イベント一覧', events_path, class: 'grey-text text-lighten-3' %></li>
-                <li><%= link_to 'ログアウト', destroy_user_session_path, {method: :delete, class: 'grey-text text-lighten-3'} %></li>
-              <% else %>
-                <li>イベント作成</li>
-                <li>イベント一覧</li>
-                <li><%= link_to "ログイン", user_twitter_omniauth_authorize_path, class: 'grey-text text-lighten-3' %></li>
-              <% end %>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer-copyright">
-        <div class="container">
-        © 2019 Copyright©paya02. All Rights Reserved.
-        </div>
-      </div>
-    </footer>
+    <%= render template:'layouts/event_footer' %>
   </body>
 </html>
