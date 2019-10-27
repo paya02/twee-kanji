@@ -16,6 +16,7 @@ https://twi-kanji.herokuapp.com/
   - Docker
   - heroku
   - heroku.ymlを使って、git pushでDockerイメージの自動ビルド
+  - heroku Pipeline
 - データベース
   - MySQL
 - CSSフレームワーク
