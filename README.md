@@ -13,10 +13,8 @@ https://twi-kanji.herokuapp.com/
 - フレームワーク
   - Ruby on Rails 5.2.3(Ruby 2.6.3)
 - インフラ
+  - Heroku Container Registry
   - Docker
-  - heroku
-  - heroku.ymlを使って、git pushでDockerイメージの自動ビルド
-  - heroku Pipeline
 - データベース
   - MySQL
 - CSSフレームワーク
