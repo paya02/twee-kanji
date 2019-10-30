@@ -6,6 +6,11 @@ class User < ApplicationRecord
 
   has_many :member
   has_many :decision
+
+  # validates
+  validates :email, presence: true
+  validates :encrypted_password, presence: true
+
   scope :uid, ->(uid) { where("uid = ?", uid) }
 
   # ログイン時の存在チェック＆ユーザ追加
