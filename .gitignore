@@ -35,3 +35,7 @@ mysql-data/
 
 # rubocop
 .rubocop*
+
+# RSpec
+bin/rspec
+bin/spring
