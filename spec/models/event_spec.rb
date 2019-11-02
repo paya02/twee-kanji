@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Event, type: :model do
-  context 'イベントモデルのバリデーション' do
+
+  context '会費がNULLと数値を許可すること' do
     it "feeがNULLの場合" do
       event = Event.create(
         user_id: 1,
@@ -19,4 +20,5 @@ RSpec.describe Event, type: :model do
       expect(event).to be_valid
     end
   end
+
 end
