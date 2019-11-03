@@ -1,24 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  before do
-    @user1 = User.create(email: 'test@example.com', password: 123456, encrypted_password: 111)
-    @user2 = User.create(email: 'test@example.com', password: 123456, encrypted_password: 111, uid: 'test_uid')
+  
+  it "有効なファクトリを持つこと" do
+    expect(FactoryBot.build(:user)).to be_valid
   end
 
   it "eメール、パスワードがあれば有効な状態であること" do
-    expect(@user1).to be_valid
+    user = FactoryBot.build(:user)
+    expect(user).to be_valid
   end
 
   it "eメールがなければ無効な状態であること" do
-    user = User.new(email: nil)
+    user = FactoryBot.build(:user, email: nil)
     user.valid?
     expect(user.errors[:email]).to include("を入力してください")
   end
 
   # ソーシャルログインのみログイン許可しているので現状は問題なし
   it "パスワードがなければ無効な状態であること" do
-    user = User.new(password: nil)
+    user = FactoryBot.build(:user, password: nil)
     user.valid?
     expect(user.errors[:password]).to include("を入力してください")
   end
@@ -26,7 +27,8 @@ RSpec.describe User, type: :model do
   describe "検索文字列に一致するuidの検索" do
     context "一致するとき" do
       it "検索文字列に一致するuidのユーザーを返すこと" do
-        expect(User.uid('test_uid')).to include(@user2)
+        user = FactoryBot.create(:user, uid: 'test_uid')
+        expect(User.uid('test_uid')).to include(user)
       end
     end
     context "一致しないとき" do
