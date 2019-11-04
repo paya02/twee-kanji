@@ -32,3 +32,10 @@ mysql-data/
 
 # dotenv-rails
 .env*
+
+# rubocop
+.rubocop*
+
+# RSpec
+bin/rspec
+bin/spring

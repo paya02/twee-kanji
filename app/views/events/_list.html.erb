@@ -1,6 +1,6 @@
 <div class="col s12 m6">
   <div class="card grey lighten-4">
-    <div class="card-content">
+    <div class="card-content card-add-style">
       <span class="card-title">
         <% if list.user_id == current_user_id %>
           <a class="circle" href="javascript:void(0);">幹</a>
@@ -13,7 +13,9 @@
     </div>
     <div class="card-action">
       <%= link_to('イベント情報', "/events/#{list.id}", :action => 'show') %>
-      <%= link_to('イベント編集', "/events/edit/#{list.id}", :action => 'edit') %>
+      <% if list.user_id == current_user_id %>
+        <%= link_to('イベント編集', "/events/edit/#{list.id}", :action => 'edit') %>
+      <% end %>
     </div>
   </div>
 </div>

@@ -19,28 +19,27 @@ $(function () {
             <div class="col s12">
               <h1 class="space-dell">Twi-Kanji</h1>
             </div>
-              <p><b>Twi-Kanji</b>は、Twitterアカウントを使って、簡単な操作で<b>"幹事する"</b>サービスです。</p>
-              <p></p>
-              <ul>
-              <li><p>・日程の調整</p></li>
-              <li><p>・Twitterリストからメンバー追加</p></li>
-              <li><p>・イベントページをURLで共有(今後リプライ通知機能を追加予定)</p></li>
-              </ul>
-              <p>など、面倒な幹事のお仕事をサポートします。</p>
-              <p>登録不要！Twitterアカウントだけで利用できます</p>
+            <p><b>Twi-Kanji</b>は、Twitterアカウントを使って、簡単な操作で<b>"幹事する"</b>サービスです。</p>
+            <p></p>
+            <ul>
+            <li><p>・日程のアンケート</p></li>
+            <li><p>・Twitterリストからメンバー追加</p></li>
+            <li><p>・イベントページをURLで共有(今後リプライ通知機能を追加予定)</p></li>
+            </ul>
+            <p>など、面倒な幹事のお仕事をサポートします。</p>
+            <p>登録不要！Twitterアカウントだけで利用できます</p>
+            <br>
+            <%= link_to "使ってみる(要Twitterアカウント)", user_twitter_omniauth_authorize_path, :class => 'waves-effect waves-light btn text-flat login-btn' %>
+            <%= form_for(:user, :url => session_path(:user)) do |f| %>
+              <%= f.hidden_field :email, {value: 'test_twitter@example.com'} %>
               <br>
-              <%= link_to "使ってみる(要Twitterアカウント)", user_twitter_omniauth_authorize_path, :class => 'waves-effect waves-light btn text-flat' %>
-              <%= form_for(:user, :url => session_path(:user)) do |f| %>
-                <%= f.hidden_field :email, {value: 'test_twitter@example.com'} %>
-                <br>
-                <%= f.submit '機能を体験してみる(幹事)', :class => 'waves-effect waves-light btn text-flat yellow darken-3 login-btn' %>
-              <% end %>
-              <%= form_for(:user, :url => session_path(:user)) do |f| %>
-                <%= f.hidden_field :email, {value: 'test_twitter1@example.com'} %>
-                <br>
-                <%= f.submit '機能を体験してみる(参加者)', :class => 'waves-effect waves-light btn text-flat yellow darken-3 login-btn' %>
-              <% end %>
-            </div>
+              <%= f.submit '機能を体験してみる(幹事)', :class => 'waves-effect waves-light btn text-flat yellow darken-3 login-btn' %>
+            <% end %>
+            <%= form_for(:user, :url => session_path(:user)) do |f| %>
+              <%= f.hidden_field :email, {value: 'test_twitter1@example.com'} %>
+              <br>
+              <%= f.submit '機能を体験してみる(参加者)', :class => 'waves-effect waves-light btn text-flat yellow darken-3 login-btn' %>
+            <% end %>
           </div>    
         </div>
       </div>

@@ -1,48 +1,48 @@
 <script type="text/javascript">
 $(function(){
-    // 「.modal-open」をクリック
-    $('.modal-open').click(function(){
-        // オーバーレイ用の要素を追加
-        $('body').append('<div class="modal-overlay"></div>');
-        // オーバーレイをフェードイン
-        $('.modal-overlay').fadeIn('fast');
+  // 「.modal-open」をクリック
+  $('.modal-open').click(function(){
+    // オーバーレイ用の要素を追加
+    $('body').append('<div class="modal-overlay"></div>');
+    // オーバーレイをフェードイン
+    $('.modal-overlay').fadeIn('fast');
 
-        // モーダルコンテンツのIDを取得
-        var modal = '#' + $(this).attr('data-target');
-        // モーダルコンテンツの表示位置を設定
-        modalResize();
-         // モーダルコンテンツフェードイン
-        $(modal).fadeIn('fast');
+    // モーダルコンテンツのIDを取得
+    var modal = '#' + $(this).attr('data-target');
+    // モーダルコンテンツの表示位置を設定
+    modalResize();
+    // モーダルコンテンツフェードイン
+    $(modal).fadeIn('fast');
 
-        // 「.modal-overlay」あるいは「.modal-close」をクリック
-        $('.modal-overlay, .modal-close').off().click(function(){
-            // モーダルコンテンツとオーバーレイをフェードアウト
-            $(modal).fadeOut('fast');
-            $('.modal-overlay').fadeOut('fast',function(){
-                // オーバーレイを削除
-                $('.modal-overlay').remove();
-            });
-        });
-
-        // リサイズしたら表示位置を再取得
-        $(window).on('resize', function(){
-            modalResize();
-        });
-
-        // モーダルコンテンツの表示位置を設定する関数
-        function modalResize(){
-            // ウィンドウの横幅、高さを取得
-            var w = $(window).width();
-            var h = $(window).height();
-
-            // モーダルコンテンツの表示位置を取得
-            var x = (w - $(modal).outerWidth(true)) / 2;
-            var y = (h - $(modal).outerHeight(true)) / 2;
-
-            // モーダルコンテンツの表示位置を設定
-            $(modal).css({'left': x + 'px','top': y + 'px'});
-        }
+    // 「.modal-overlay」あるいは「.modal-close」をクリック
+    $('.modal-overlay, .modal-close').off().click(function(){
+      // モーダルコンテンツとオーバーレイをフェードアウト
+      $(modal).fadeOut('fast');
+      $('.modal-overlay').fadeOut('fast',function(){
+          // オーバーレイを削除
+          $('.modal-overlay').remove();
+      });
     });
+
+    // リサイズしたら表示位置を再取得
+    $(window).on('resize', function(){
+      modalResize();
+    });
+
+    // モーダルコンテンツの表示位置を設定する関数
+    function modalResize(){
+      // ウィンドウの横幅、高さを取得
+      var w = $(window).width();
+      var h = $(window).height();
+
+      // モーダルコンテンツの表示位置を取得
+      var x = (w - $(modal).outerWidth(true)) / 2;
+      var y = (h - $(modal).outerHeight(true)) / 2;
+
+      // モーダルコンテンツの表示位置を設定
+      $(modal).css({'left': x + 'px','top': y + 'px'});
+    }
+  });
   
   $(document).ready(function(){
     // サイドバー初期化(https://materializecss.com/navbar.html)
@@ -58,8 +58,8 @@ $(function(){
 <div class="container">
   <h2>イベント情報</h2>
   <div class="row">
-    <div class="col s3"><b>イベント名</b></div>
-    <div class="col s9"><%= @event.title %></div>
+    <div class="col s4"><b>イベント名</b></div>
+    <div class="col s8"><%= @event.title %></div>
   </div>
   <hr>
   <div class="row space-dell">
@@ -68,12 +68,16 @@ $(function(){
     </div>
   </div>
   <div class="row">
-    <div class="col s12">
-      <a data-target="decision_set" class="waves-effect waves-light btn modal-open">日程入力</a>
-      <% if @event.user_id == @current_user_id %>
-        <a data-target="member_add" class="waves-effect waves-light btn yellow darken-3 modal-open">メンバー追加</a>
-        <a data-target="member_delete" class="waves-effect waves-light btn yellow darken-3 modal-open">メンバー削除</a>
-      <% end %>
+    <div id="operation-board">
+      <div class="col s12 m2">
+        <a data-target="decision_set" class="waves-effect waves-light btn modal-open edit-btn">日程入力</a>
+      </div>
+      <div class="col s12 m6">
+        <% if @event.user_id == @current_user_id %>
+          <a data-target="member_add" class="waves-effect waves-light btn yellow darken-3 modal-open edit-btn">メンバー追加</a>
+          <a data-target="member_delete" class="waves-effect waves-light btn yellow darken-3 modal-open edit-btn">メンバー削除</a>
+        <% end %>
+      </div>
     </div>
   </div>
 
@@ -91,7 +95,7 @@ $(function(){
           <td><%= date.day.strftime('%Y/%m/%d') %></td>
           <% @decisionDateSum.each do |dateSum| %>
             <% if dateSum.day == date.day %>
-              <td><%= dateSum.proprieties_count %></td>
+              <td><%= dateSum.proprieties_count.force_encoding("utf-8") %></td>
             <% end %>
           <% end %>
           <% @decisionUser.each do |user| %>
@@ -106,16 +110,16 @@ $(function(){
   <br>
   <hr>
   <div class="row">
-    <div class="col s3"><b>URL(お店HPなど)</b></div>
-    <div class="col s9"><%= @event.url %></div>
+    <div class="col s4"><b>URL<br>(お店HPなど)</b></div>
+    <div class="col s8"><%= @event.url %></div>
   </div>
   <div class="row">
-    <div class="col s3"><b>会費</b></div>
-    <div class="col s9"><%= @event.fee.blank? ? '' : @event.fee.to_s(:delimited) %></div>
+    <div class="col s4"><b>会費</b></div>
+    <div class="col s8"><%= @event.fee.blank? ? '' : @event.fee.to_s(:delimited) %></div>
   </div>
   <div class="row">
-    <div class="col s3"><b>イベント詳細</b></div>
-    <div class="col s9"><%= @event.detail %></div>
+    <div class="col s4"><b>イベント詳細</b></div>
+    <div class="col s8"><%= @event.detail %></div>
   </div>
   <% if @event.user_id == @current_user_id %>
     <div class="row">
@@ -145,6 +149,7 @@ $(function(){
               <% end %>
             </div>
           <% end %>
+          <div class="list-space"></div>
           <%= submit_tag "保存", class: "waves-effect waves-light btn" %>
           <a class="modal-close waves-effect waves-light btn">閉じる</a>
         <% end %>
@@ -158,7 +163,7 @@ $(function(){
   <div class="row">
     <div class="col s12">
       <p><b>追加するメンバーを、Twitterリストから選択してください</b></p>
-      <table class="striped responsive-table">
+      <table class="striped">
         <% if defined? @owned_lists then %>
           <th>リスト名</th><th>人数</th><th>詳細</th>
           <% @owned_lists.each do |obj| %>

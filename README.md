@@ -13,8 +13,8 @@ https://twi-kanji.herokuapp.com/
 - フレームワーク
   - Ruby on Rails 5.2.3(Ruby 2.6.3)
 - インフラ
-  - heroku
-  - heroku.ymlを使って、git pushでDockerイメージの自動ビルド
+  - Heroku Container Registry
+  - Docker
 - データベース
   - MySQL
 - CSSフレームワーク
@@ -32,5 +32,6 @@ https://twi-kanji.herokuapp.com/
 
 # 今後のアップデート予定
 - RSpecによるテストの導入
-- スケジュールに一言コメントを記入する機能
-- 応答速度改善
+- スケジュールに一人一言コメントできる機能
+- DB応答速度改善
+- CDNの導入

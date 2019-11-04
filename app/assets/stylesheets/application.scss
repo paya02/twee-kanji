@@ -98,9 +98,47 @@ td.ui-datepicker-week-end a.ui-state-highlight{
     color:#fff;
 }
 
-.btn-disabled {
-  color:#fff;
-  background-color: #C0C0C0;
+// 日程入力
+#decision_set{
+  width: 30%;
+}
+@media(max-width:992px){
+  #decision_set{
+    width:50%;
+  }
+}
+@media(max-width:600px){
+  #decision_set{
+    width:85%;
+  }
+}
+#decision_set .list-space {
+  height: 75px;
+}
+
+// メンバー追加画面
+#member_add {
+  width: 50%;
+}
+@media(max-width:992px){
+  #member_add {
+    width: 85%;
+  }
+}
+
+// メンバー削除
+#member_delete {
+  width: 30%;
+}
+@media(max-width:992px){
+  #member_delete {
+    width: 50%;
+  }
+}
+@media(max-width:600px){
+  #member_delete{
+    width:85%;
+  }
 }
 
 // Top ---------------------
@@ -121,6 +159,16 @@ td.ui-datepicker-week-end a.ui-state-highlight{
   background-color: rgba(0,0,0,0.3);
   height: 100vh;
 }
+@media(max-width:992px){
+  .main-filter {
+    height:70vh;
+  }
+}
+@media(max-width:600px){
+  .main-filter {
+    height:100vh;
+  }
+}
 
 #top {
   margin: 0px;
@@ -129,10 +177,30 @@ td.ui-datepicker-week-end a.ui-state-highlight{
 #top p {
   font-size: 18px;
 }
+@media(max-width:992px){
+  #top p {
+    font-size: 18px;
+  }
+}
+@media(max-width:600px){
+  #top p {
+    font-size: 15px;
+  }
+}
 
 #top ul {
   list-style: circle;
   padding-left: 40px;
+}
+@media(max-width:992px){
+  #top ul {
+    padding: 20px;
+  }
+}
+@media(max-width:600px){
+  #top ul {
+    padding: 0px;
+  }
 }
 
 #top #message{
@@ -141,14 +209,44 @@ td.ui-datepicker-week-end a.ui-state-highlight{
   background: #fff;
   position: relative;
   margin: 0 auto;
-  padding: 50px 60px;
+  padding: 50px;
   // text-align: center;
   box-sizing: border-box;
   box-shadow: 10px 10px 24px rgba(0,0,0,0.5);
 }
+@media(max-width:992px){
+  #top #message{
+    padding: 20px;
+  }
+}
+@media(max-width:600px){
+  #top #message{
+    padding: 20px;
+  }
+}
 
-#top .login-btn {
-  width: 250px;
+#top .login-btn{
+  width: 260px;
+}
+@media(max-width:992px){
+  #top .login-btn{
+    width: 100%;
+  }
+}
+@media(max-width:600px){
+  #top .login-btn{
+    width: 100%;
+  }
+}
+
+// 操作ボタン
+#operation-board .edit-btn {
+  margin: 3px 3px;
+}
+
+// card-content
+.card-add-style {
+  height: 160px;
 }
 
 // toast ---------------------
@@ -187,6 +285,12 @@ td.ui-datepicker-week-end a.ui-state-highlight{
 }
 
 // 汎用 ---------------------
+// 使用不可ボタン
+.btn-disabled {
+  color:#fff;
+  background-color: #C0C0C0;
+}
+
 // 空白削除
 .space-dell {
   padding:0px;
