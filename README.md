@@ -22,6 +22,8 @@ https://twi-kanji.herokuapp.com/
 - ユーザー認証
   - Devise
   - omniauth-twitter
+- テスト
+  - RSpec
 
 # 機能
 - アカウント登録不要で利用可能(要Twitterアカウント)
@@ -31,7 +33,6 @@ https://twi-kanji.herokuapp.com/
 - 出欠情報を1画面で把握可能
 
 # 今後のアップデート予定
-- RSpecによるテストの導入
 - スケジュールに一人一言コメントできる機能
 - DB応答速度改善
 - CDNの導入
