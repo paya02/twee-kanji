@@ -4,6 +4,9 @@ class EventsController < ApplicationController
   before_action -> {
     event_member(params[:id], current_user.id)
   }, only:[:show, :edit, :update]
+  before_action -> {
+    event_kanji(params[:id], current_user.id)
+  }, only:[:destroy]
 
   def index
     # ログインユーザのイベント取得
